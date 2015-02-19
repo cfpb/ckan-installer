@@ -1,0 +1,15 @@
+---
+# tasks file for epel
+- name: install epel
+  yum: name=epel-release
+  sudo: yes
+
+# Due to a bug in either vagrant or this version of centos,
+# the config file will cause yum to stop working properly
+# unless we change it from https to http.  
+- name: Fix epel config
+  lineinfile: 
+    dest=/etc/yum.repos.d/epel.repo
+    regexp="mirrorlist=https://mirrors.fedoraproject.org/metalink\?repo=epel-6&arch=\$basearch"
+    line="mirrorlist=http://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch"
+  sudo: yes

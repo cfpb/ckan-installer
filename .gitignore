@@ -37,3 +37,7 @@ coverage.xml
 node_modules/
 bower_components/
 .grunt/
+
+# Vagrant #
+##########
+.vagrant

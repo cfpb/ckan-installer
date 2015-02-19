@@ -1,0 +1,25 @@
+---
+# Provisions the CKAN VM from scratch
+
+- hosts: all
+  gather_facts: False
+  roles:
+    - epel
+  tasks:
+    - name: install CKAN dependencies
+      yum: name={{item}}
+      with_items:
+        - postgresql-server 
+        - postgresql-devel
+        - python-devel
+        - libxslt 
+        - libxslt-devel
+        - libxml2
+        - libxml2-devel
+        - python-virtualenv
+        - python-pip
+        - git
+        - java-1.6.0-openjdk-devel
+        - tomcat6
+        - jetty-eclipse
+      sudo: yes
