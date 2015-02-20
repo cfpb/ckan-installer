@@ -1,0 +1,7 @@
+---
+# Note: Try to minimize the number of group-specific variables
+
+ckan_version_tag: ckan-2.2.1
+ckan_user: vagrant
+ckan_group: vagrant
+

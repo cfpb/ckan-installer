@@ -5,6 +5,7 @@
   gather_facts: False
   roles:
     - epel
+    - postgres-ckan
   tasks:
     - name: install CKAN dependencies
       yum: name={{item}}
@@ -23,3 +24,23 @@
         - tomcat6
         - jetty-eclipse
       sudo: yes
+    
+    - name: create CKAN directory
+      file:
+        path="{{ckan_install_dir}}"
+        state=directory
+        owner="{{ckan_user}}"
+        group="{{ckan_group}}"
+      sudo: yes
+    
+    - name: pip install CKAN
+      pip: 
+        name="git+https://github.com/ckan/ckan.git@{{ckan_version_tag}}#egg=ckan"
+        virtualenv="{{ckan_venv}}"
+        virtualenv_site_packages=no
+        extra_args="-e"
+
+    - name: pip install CKAN requirements
+      pip:
+        requirements="{{ckan_venv}}/src/ckan/requirements.txt"
+        virtualenv="{{ckan_venv}}"

@@ -1,0 +1,27 @@
+---
+# tasks file for postgres-ckan
+- name: install postgres dependencies
+  yum: name=python-psycopg2
+  sudo: yes
+
+- name: determine if db initialized
+  stat: path=/var/lib/pgsql/data
+  ignore_errors: true
+  register: db_init
+  sudo: yes
+
+- name: initialize postgres
+  shell: service postgresql initdb 
+  when: not db_init.stat.exists
+  sudo: yes
+
+- name: start postgres db
+  service: name=postgresql state=started
+  sudo: yes
+
+- name: create postgres db
+  postgresql_db:
+    name={{ckan_db_name}}
+    encoding='UTF-8'
+  sudo: yes
+  sudo_user: postgres
