@@ -85,12 +85,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "provisioners/provision.yml"
+    ansible.verbose = 'v'
     # Creates proper inventory file with correct ssh port
     # The generated inventory file is located at:
     # .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory
-    #ansible.groups = {
-    #    "unitybox" => ["default"]
-    #}
+    ansible.groups = {
+        "local" => ["default"]
+    }
   end
   
 end
