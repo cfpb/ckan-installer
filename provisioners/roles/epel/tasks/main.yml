@@ -12,4 +12,5 @@
     dest=/etc/yum.repos.d/epel.repo
     regexp="mirrorlist=https://mirrors.fedoraproject.org/metalink\?repo=epel-6&arch=\$basearch"
     line="mirrorlist=http://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch"
+    backrefs=yes
   sudo: yes
