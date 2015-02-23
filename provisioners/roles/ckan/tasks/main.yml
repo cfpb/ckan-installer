@@ -1,0 +1,52 @@
+---
+# tasks file for ckan
+- name: install CKAN dependencies
+  yum: name={{item}}
+  with_items:
+    - postgresql-server 
+    - postgresql-devel
+    - python-devel
+    - libxslt 
+    - libxslt-devel
+    - libxml2
+    - libxml2-devel
+    - python-virtualenv
+    - python-pip
+    - git
+    - java-1.6.0-openjdk-devel
+    - tomcat6
+    - jetty-eclipse
+  sudo: yes
+
+- name: create CKAN directory
+  file:
+    path="{{ckan_install_dir}}"
+    state=directory
+    owner="{{ckan_user}}"
+    group="{{ckan_group}}"
+  sudo: yes
+
+- name: pip install CKAN
+  pip: 
+    name="git+https://github.com/ckan/ckan.git@{{ckan_version_tag}}#egg=ckan"
+    virtualenv="{{ckan_venv}}"
+    virtualenv_site_packages=no
+    extra_args="-e"
+
+- name: pip install CKAN requirements
+  pip:
+    requirements="{{ckan_venv}}/src/ckan/requirements.txt"
+    virtualenv="{{ckan_venv}}"
+
+- name: create CKAN config directory
+  file:
+    path="{{ckan_config_dir}}"
+    state=directory
+    owner="{{ckan_user}}"
+    group="{{ckan_group}}"
+  sudo: yes
+
+- name: create CKAN config file
+  template: 
+    src="development.ini.j2"
+    dest="{{ckan_config_dir}}/development.ini"

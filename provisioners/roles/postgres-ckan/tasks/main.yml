@@ -25,3 +25,12 @@
     encoding='UTF-8'
   sudo: yes
   sudo_user: postgres
+
+- name: create ckan db user
+  postgresql_user: 
+    db="{{ckan_db_name}}" 
+    name="{{ckan_db_user}}" 
+    password="{{ckan_db_password}}"
+    priv="ALL"
+  sudo: yes
+  sudo_user: postgres

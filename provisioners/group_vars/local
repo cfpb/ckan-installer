@@ -4,4 +4,5 @@
 ckan_version_tag: ckan-2.2.1
 ckan_user: vagrant
 ckan_group: vagrant
-
+ckan_db_user: ckan_default
+ckan_db_password: your-super-secure-ckan-password!23
