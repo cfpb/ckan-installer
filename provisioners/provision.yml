@@ -7,6 +7,6 @@
     - epel
     - postgres-ckan
     - ckan
-    
+    - solr
 
 

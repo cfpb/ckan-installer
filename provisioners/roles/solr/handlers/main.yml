@@ -1,0 +1,5 @@
+---
+# handlers file for solr
+- name: restart tomcat service
+  service: name=tomcat6 state=restarted
+  sudo: yes

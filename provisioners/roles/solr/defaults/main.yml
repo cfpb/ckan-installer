@@ -1,0 +1,4 @@
+---
+# defaults file for solr
+solr_home: /opt/solr
+java_home: /usr/lib/jvm/java-1.6.0-openjdk.x86_64/bin/java

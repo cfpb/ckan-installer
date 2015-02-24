@@ -13,9 +13,7 @@
     - python-virtualenv
     - python-pip
     - git
-    - java-1.6.0-openjdk-devel
-    - tomcat6
-    - jetty-eclipse
+    - java-1.7.0-openjdk-devel
   sudo: yes
 
 - name: create CKAN directory
