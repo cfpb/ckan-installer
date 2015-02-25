@@ -1,7 +1,11 @@
 ---
 # tasks file for postgres-ckan
 - name: install postgres dependencies
-  yum: name=python-psycopg2
+  yum: name={{item}}
+  with_items: 
+    - python-psycopg2
+    - postgresql-server 
+    - postgresql-devel
   sudo: yes
 
 - name: determine if db initialized
