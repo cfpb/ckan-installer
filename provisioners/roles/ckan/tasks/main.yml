@@ -48,3 +48,8 @@
   template: 
     src="development.ini.j2"
     dest="{{ckan_config_dir}}/development.ini"
+
+- name: create CKAN solr schema
+  template:
+    src=schema.xml.j2
+    dest="{{solr_home}}/solr/collection1/conf/schema.xml"

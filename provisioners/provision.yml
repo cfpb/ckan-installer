@@ -6,7 +6,7 @@
   roles:
     - epel
     - postgres-ckan
-    - ckan
     - solr
+    - ckan
 
 

@@ -1,2 +1,3 @@
 ---
 # defaults file for ckan
+solr_home: /opt/solr

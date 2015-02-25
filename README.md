@@ -80,6 +80,11 @@ important pieces, etc.
 
 General instructions on _how_ to contribute should be stated with a link to [CONTRIBUTING](CONTRIBUTING.md).
 
+## Troubleshooting  
+
+### Solr 
+If you can't seem to access solr in Vagrant (checking http://localhost:8983/solr), try stopping the iptables service:
+`sudo service iptables stop`
 
 ----
 
