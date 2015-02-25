@@ -40,5 +40,11 @@
   service: name=solr state=started
   sudo: yes
 
-# TODO: Setup a user specifically for solr
-# useradd -r -d /opt/solr -M -c "Apache Solr" solr
+- name: create a dedicated solr user for the service
+  user: 
+    name="{{solr_user}}"
+    comment="Apache Solr"
+    createhome=no
+    system=yes
+    password="{{solr_user_password}}"
+  sudo: yes
