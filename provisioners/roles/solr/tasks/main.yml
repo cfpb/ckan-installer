@@ -4,6 +4,7 @@
   get_url: 
     url=http://archive.apache.org/dist/lucene/solr/4.9.1/solr-4.9.1.tgz
     dest=/tmp/solr-4.9.1.tgz
+    timeout=30
 
 - name: create solr home
   file: 
