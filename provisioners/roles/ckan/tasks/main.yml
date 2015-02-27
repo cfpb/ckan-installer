@@ -29,10 +29,15 @@
     virtualenv_site_packages=no
     extra_args="-e"
 
+- debug: var=ansible_env
 - name: pip install CKAN requirements
   pip:
     requirements="{{ckan_venv}}/src/ckan/requirements.txt"
     virtualenv="{{ckan_venv}}"
+  environment: 
+    # This is a bit of a hack so that we don't have to spend
+    # time gathering facts. We could just use anisble_env.PATH
+    PATH: /usr/pgsql-9.3/bin:/usr/local/bin:/bin:/usr/bin
 
 - name: create CKAN config directory
   file:
@@ -51,3 +56,15 @@
   template:
     src=schema.xml.j2
     dest="{{solr_home}}/solr/collection1/conf/schema.xml"
+
+- name: create CKAN tables in database
+  shell: source {{ckan_venv}}/bin/activate && paster db init -c {{ckan_config_dir}}/development.ini
+    chdir="{{ckan_venv}}/src/ckan"
+  sudo: yes
+  sudo_user: postgres
+
+- name: create symlink to who.ini
+  file: 
+    src={{ckan_venv}}/src/ckan/who.ini
+    dest=/etc/ckan/default/who.ini
+    state=link
