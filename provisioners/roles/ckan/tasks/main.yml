@@ -1,19 +1,5 @@
 ---
 # tasks file for ckan
-- name: install CKAN dependencies
-  yum: name={{item}}
-  with_items:
-    - python-devel
-    - libxslt 
-    - libxslt-devel
-    - libxml2
-    - libxml2-devel
-    - python-virtualenv
-    - python-pip
-    - git
-    - java-1.7.0-openjdk-devel
-  sudo: yes
-
 - name: create CKAN directory
   file:
     path="{{ckan_install_dir}}"
@@ -29,7 +15,6 @@
     virtualenv_site_packages=no
     extra_args="-e"
 
-- debug: var=ansible_env
 - name: pip install CKAN requirements
   pip:
     requirements="{{ckan_venv}}/src/ckan/requirements.txt"

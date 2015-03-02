@@ -66,3 +66,14 @@
     src=/usr/local/bin/python2.7
     state=link
   sudo: yes
+
+- name: creates symlink in /usr/bin for pip
+  file: 
+    path=/usr/bin/pip
+    src=/usr/local/bin/pip2.7
+    state=link
+  sudo: yes
+
+- name: pip install virtualenv
+  pip: name=virtualenv
+  sudo: yes
