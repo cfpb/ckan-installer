@@ -1,0 +1,68 @@
+---
+- name: Ensure dependencies are installed
+  yum: name={{ item }} state=present
+  with_items:
+    - zlib-devel
+    - bzip2-devel
+    - openssl-devel
+    - ncurses-devel
+    - readline-devel
+    - pcre-devel
+    - curl-devel
+    - sqlite-devel
+    - xz-libs
+  sudo: yes
+
+- name: Check if python is already installed
+  stat: path=/usr/local/bin/python2.7
+  register: python
+
+- name: Download Python
+  get_url: 
+    url=https://www.python.org/ftp/python/2.7.8/Python-2.7.8.tgz 
+    dest=/tmp/Python-2.7.8.tar
+  when: not python.stat.exists
+
+- name: Unpack Python
+  unarchive: src=/tmp/Python-2.7.8.tar dest=/tmp copy=no
+  when: not python.stat.exists
+
+- name: Configure, compile and install Python
+  shell: cd /tmp/Python-2.7.8 && {{ item }}
+  with_items:
+    - ./configure --prefix=/usr/local
+    - make
+    - make altinstall
+  when: not python.stat.exists
+  sudo: yes
+
+- name: downloads setuptools
+  get_url: 
+    dest=/tmp/ez_setup.py
+    url=https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
+  
+- name: installs setuptools
+  command: /usr/local/bin/python2.7 ez_setup.py
+    chdir=/tmp/
+    creates=/usr/local/bin/easy_install-2.7
+  sudo: yes
+
+- name: installs pip
+  command: /usr/local/bin/easy_install-2.7 pip
+    chdir=/tmp/
+    creates=/usr/local/bin/pip2.7
+  sudo: yes
+
+- name: creates symlink in /usr/local/bin
+  file: 
+    path=/usr/local/bin/python
+    src=/usr/local/bin/python2.7
+    state=link
+  sudo: yes
+
+- name: creates symlink in /usr/bin
+  file: 
+    path=/usr/bin/python2.7
+    src=/usr/local/bin/python2.7
+    state=link
+  sudo: yes

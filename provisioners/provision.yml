@@ -4,6 +4,7 @@
 - hosts: all
   gather_facts: False
   roles:
+    - python27
     - epel
     - postgres-ckan
     - solr
