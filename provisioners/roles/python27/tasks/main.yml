@@ -11,6 +11,7 @@
     - curl-devel
     - sqlite-devel
     - xz-libs
+    - git
   sudo: yes
 
 - name: Check if python is already installed
