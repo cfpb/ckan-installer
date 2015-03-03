@@ -1,5 +1,9 @@
 ---
 # tasks file for solr
+- name: install java
+  yum: name=java-1.7.0-openjdk-devel
+  sudo: yes
+
 - name: download solr source binary
   get_url: 
     url=http://archive.apache.org/dist/lucene/solr/4.9.1/solr-4.9.1.tgz
@@ -26,7 +30,7 @@
 - name: create solr service entry
   template: 
     src=solr.sh.j2
-    dest=/etc/sysconfig/solr
+    dest=/etc/init.d/solr
     mode=755
   sudo: yes
 
