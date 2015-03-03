@@ -1,0 +1,13 @@
+---
+# tasks file for apache
+- name: install apache
+  yum: name=httpd-devel
+  sudo: yes
+
+- name: pip install mod_wsgi
+  pip: name=mod_wsgi
+  sudo: yes
+
+- name: start apache
+  service: name=httpd state=started
+  sudo: yes

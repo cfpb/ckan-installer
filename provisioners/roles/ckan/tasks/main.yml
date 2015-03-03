@@ -1,5 +1,11 @@
 ---
 # tasks file for ckan
+- name: Yum install any CKAN dependencies
+  yum: name={{ item }} state=present
+  with_items:
+    - git
+  sudo: yes
+
 - name: create CKAN directory
   file:
     path="{{ckan_install_dir}}"
@@ -34,22 +40,45 @@
 
 - name: create CKAN config file
   template: 
-    src="development.ini.j2"
-    dest="{{ckan_config_dir}}/development.ini"
+    src="config.ini.j2"
+    dest="{{ckan_config_dir}}/config.ini"
 
 - name: create CKAN solr schema
   template:
     src=schema.xml.j2
     dest="{{solr_home}}/solr/collection1/conf/schema.xml"
+  notify: restart solr
 
 - name: create CKAN tables in database
-  shell: source {{ckan_venv}}/bin/activate && paster db init -c {{ckan_config_dir}}/development.ini
+  shell: source {{ckan_venv}}/bin/activate && paster db init -c {{ckan_config_dir}}/config.ini
     chdir="{{ckan_venv}}/src/ckan"
   sudo: yes
   sudo_user: postgres
+  notify: restart postgres
 
 - name: create symlink to who.ini
   file: 
     src={{ckan_venv}}/src/ckan/who.ini
     dest=/etc/ckan/default/who.ini
     state=link
+
+- name: create CKAN wsgi file
+  template: 
+    src="apache.wsgi.j2"
+    dest="{{ckan_config_dir}}/apache.wsgi"
+  notify: restart apache
+
+- name: create CKAN apache config file
+  template:
+    src="ckan.conf.j2"
+    dest="/etc/httpd/conf.d/ckan.conf"
+  sudo: yes
+  notify: restart apache
+
+# Stop iptables because it blocks some of the necessary ports for 
+# ckan to function properly.
+# TODO: Find an actual solution to this problem instead of disabling
+# iptables
+- name: stop iptables
+  service: name=iptables state=stopped
+  sudo: yes

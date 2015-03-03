@@ -1,3 +1,7 @@
 ---
 # defaults file for ckan
 solr_home: /opt/solr
+ckan_server_name: localhost
+ckan_server_alias: localhost
+apache_user: vagrant
+apache_group: vagrant

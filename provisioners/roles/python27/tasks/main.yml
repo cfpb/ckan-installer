@@ -11,7 +11,6 @@
     - curl-devel
     - sqlite-devel
     - xz-libs
-    - git
   sudo: yes
 
 - name: Check if python is already installed
@@ -31,11 +30,24 @@
 - name: Configure, compile and install Python
   shell: cd /tmp/Python-2.7.8 && {{ item }}
   with_items:
-    - ./configure --prefix=/usr/local
+    - ./configure --prefix=/usr/local --enable-shared
     - make
     - make altinstall
   when: not python.stat.exists
   sudo: yes
+
+- name: create symlink for libpython
+  file: 
+    src=/usr/local/lib/libpython2.7.so.1.0
+    path=/usr/lib/libpython2.7.so.1.0
+    state=link
+  sudo: yes
+  register: symlink_libpython
+
+- name: run ldconfig
+  command: ldconfig
+  sudo: yes
+  when: symlink_libpython|changed
 
 - name: downloads setuptools
   get_url: 
