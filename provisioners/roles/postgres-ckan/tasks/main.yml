@@ -37,7 +37,7 @@
   sudo: yes
 
 - name: start postgres db
-  service: name=postgresql-9.3 state=started
+  service: name=postgresql-9.3 state=started enabled=yes
   sudo: yes
 
 - name: create postgres db
