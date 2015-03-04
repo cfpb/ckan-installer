@@ -1,2 +1,7 @@
 ---
 # defaults file for postgres-ckan
+ckan_db_name: ckan_default
+ckan_db_user: ckan_default
+ckan_datastore_db_name: datastore_default
+ckan_datastore_db_user: datastore_default
+# don't create a default for passwords, force people to override this

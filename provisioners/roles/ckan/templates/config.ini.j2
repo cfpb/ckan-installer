@@ -45,8 +45,8 @@ who.log_file = %(cache_dir)s/who_log.ini
 ## Database Settings
 sqlalchemy.url = postgresql://{{ckan_db_user}}:{{ckan_db_password}}@localhost/{{ckan_db_name}}
 
-#ckan.datastore.write_url = postgresql://ckan_default:pass@localhost/datastore_default
-#ckan.datastore.read_url = postgresql://datastore_default:pass@localhost/datastore_default
+ckan.datastore.write_url = postgresql://{{ckan_db_user}}:{{ckan_db_password}}@localhost/datastore_default
+ckan.datastore.read_url = postgresql://{{ckan_datastore_db_user}}:{{ckan_datastore_db_password}}@localhost/datastore_default
 
 
 ## Site Settings
@@ -83,7 +83,7 @@ solr_url = http://127.0.0.1:8983/solr
 #       Add ``pdf_preview`` to enable the resource preview for PDFs
 #		Add ``resource_proxy`` to enable resorce proxying and get around the
 #		same origin policy
-ckan.plugins = stats text_preview recline_preview
+ckan.plugins = stats text_preview recline_preview datastore
 
 
 ## Front-End Settings

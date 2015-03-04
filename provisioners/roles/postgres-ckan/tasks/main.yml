@@ -45,6 +45,7 @@
     name={{ckan_db_name}}
     encoding='UTF-8'
   sudo: yes
+  register: create_ckan_db
   sudo_user: postgres
 
 - name: create ckan db user
@@ -54,6 +55,26 @@
     password="{{ckan_db_password}}"
     #priv="ALL"
   sudo: yes
+  register: create_ckan_db_user
+  sudo_user: postgres
+
+- name: create ckan datastore db
+  postgresql_db:
+    name={{ckan_datastore_db_name}}
+    encoding='UTF-8'
+    owner="{{ckan_db_user}}"
+  sudo: yes
+  register: create_datastore_db
+  sudo_user: postgres
+
+- name: create datastore db user
+  postgresql_user: 
+    db="{{ckan_datastore_db_name}}" 
+    name="{{ckan_datastore_db_user}}" 
+    password="{{ckan_datastore_db_password}}"
+    #priv="ALL"
+  sudo: yes
+  register: create_datastore_db_user
   sudo_user: postgres
 
 - name: setup pg_hba.conf
