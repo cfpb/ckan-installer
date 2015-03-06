@@ -9,5 +9,5 @@
   sudo: yes
 
 - name: start apache
-  service: name=httpd state=started
+  service: name=httpd state=started enabled=yes
   sudo: yes
