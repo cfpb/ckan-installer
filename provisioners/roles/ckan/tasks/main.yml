@@ -38,6 +38,14 @@
     group="{{ckan_group}}"
   sudo: yes
 
+- name: create CKAN uploads directory
+  file:
+    path="{{ckan_file_storage_dir}}"
+    state=directory
+    owner="{{apache_user}}"
+    group="{{apache_group}}"
+  sudo: yes
+
 - name: create CKAN config file
   template: 
     src="config.ini.j2"
