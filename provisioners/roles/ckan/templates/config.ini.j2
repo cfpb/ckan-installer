@@ -51,18 +51,18 @@ ckan.datastore.read_url = postgresql://{{ckan_datastore_db_user}}:{{ckan_datasto
 
 ## Site Settings
 
-ckan.site_url =
+ckan.site_url = {{ckan_site_url}}
 
 
 ## Authorization Settings
 
 ckan.auth.anon_create_dataset = false
-ckan.auth.create_unowned_dataset = true
-ckan.auth.create_dataset_if_not_in_organization = true
+ckan.auth.create_unowned_dataset = false
+ckan.auth.create_dataset_if_not_in_organization = false
 ckan.auth.user_create_groups = true
-ckan.auth.user_create_organizations = true
-ckan.auth.user_delete_groups = true
-ckan.auth.user_delete_organizations = true
+ckan.auth.user_create_organizations = false
+ckan.auth.user_delete_groups = false
+ckan.auth.user_delete_organizations = false
 ckan.auth.create_user_via_api = false
 ckan.auth.create_user_via_web = true
 ckan.auth.roles_that_cascade_to_sub_groups = admin
@@ -120,9 +120,9 @@ ckan.feeds.author_link =
 
 ## Storage Settings
 
-#ckan.storage_path = /var/lib/ckan
-#ckan.max_resource_size = 10
-#ckan.max_image_size = 2
+ckan.storage_path = {{ckan_file_storage_dir}}
+ckan.max_resource_size = 10
+ckan.max_image_size = 2
 
 ## Datapusher settings
 
@@ -133,21 +133,21 @@ ckan.feeds.author_link =
 
 ## Activity Streams Settings
 
-#ckan.activity_streams_enabled = true
-#ckan.activity_list_limit = 31
-#ckan.activity_streams_email_notifications = true
-# ckan.email_notifications_since = 2 days
+ckan.activity_streams_enabled = true
+ckan.activity_list_limit = 31
+ckan.activity_streams_email_notifications = true
+ckan.email_notifications_since = 2 days
 
 
 ## Email settings
 
-email_to = you@yourdomain.com
-error_email_from = paste@localhost
-smtp.server = localhost
-smtp.starttls = False
-#smtp.user = your_username@gmail.com
-#smtp.password = your_password
-#smtp.mail_from =
+email_to = {{ckan_email_to}}
+error_email_from = {{ckan_error_email_from}}
+smtp.server = {{ckan_smtp_server}}
+smtp.starttls = {{ckan_smtp_starttls}}
+smtp.user = {{ckan_smtp_user}}
+smtp.password = {{ckan_smtp_password}}
+smtp.mail_from = {{ckan_email_from}}
 
 
 ## Logging configuration

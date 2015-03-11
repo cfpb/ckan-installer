@@ -1,7 +1,23 @@
 ---
 # defaults file for ckan
 solr_home: /opt/solr
-ckan_server_name: localhost
-ckan_server_alias: localhost
 apache_user: vagrant
 apache_group: vagrant
+ckan_server_name: localhost
+ckan_server_alias: localhost
+ckan_file_storage_dir: "{{ckan_venv}}/uploads"
+ckan_log_dir: /var/log/ckan
+ckan_site_id: ckan
+ckan_site_url: ""
+
+# Email Settings
+ckan_email_to: ""
+ckan_error_email_from: ckan-noreply-error@localhost
+ckan_email_from: ckan-noreply@localhost
+ckan_smtp_server: localhost
+ckan_smtp_starttls: False
+ckan_smtp_user: ""
+ckan_smtp_password: ""
+# default: every 30 minutes.
+ckan_email_flush_interval: "0,30"
+
