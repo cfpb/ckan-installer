@@ -46,10 +46,19 @@
     group="{{apache_group}}"
   sudo: yes
 
+- name: create CKAN log directory
+  file:
+    path="{{ckan_log_dir}}"
+    state=directory
+    owner="{{ckan_user}}"
+    group="{{ckan_group}}"
+  sudo: yes
+
 - name: create CKAN config file
   template: 
     src="config.ini.j2"
     dest="{{ckan_config_dir}}/config.ini"
+  notify: restart apache
 
 - name: create CKAN solr schema
   template:
@@ -89,6 +98,14 @@
     dest="/etc/httpd/conf.d/ckan.conf"
   sudo: yes
   notify: restart apache
+
+
+- name: create crontab for sending activity stream emails
+  cron: name="ckan_send_emails"
+        minute={{ckan_email_flush_interval}}
+        job="echo $(date) >> {{ckan_log_dir}}/email_flush.log && echo '{}' | {{ckan_venv}}/bin/paster post -c {{ckan_config_dir}}/config.ini /api/action/send_email_notifications >> {{ckan_log_dir}}/email_flush.log && echo '' >> {{ckan_log_dir}}/email_flush.log"
+        user="{{ckan_user}}"
+  sudo: yes
 
 # Stop iptables because it blocks some of the necessary ports for 
 # ckan to function properly.

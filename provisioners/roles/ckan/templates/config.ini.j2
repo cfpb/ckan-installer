@@ -133,21 +133,21 @@ ckan.max_image_size = 2
 
 ## Activity Streams Settings
 
-#ckan.activity_streams_enabled = true
-#ckan.activity_list_limit = 31
-#ckan.activity_streams_email_notifications = true
-# ckan.email_notifications_since = 2 days
+ckan.activity_streams_enabled = true
+ckan.activity_list_limit = 31
+ckan.activity_streams_email_notifications = true
+ckan.email_notifications_since = 2 days
 
 
 ## Email settings
 
-email_to = you@yourdomain.com
-error_email_from = paste@localhost
-smtp.server = localhost
-smtp.starttls = False
-#smtp.user = your_username@gmail.com
-#smtp.password = your_password
-#smtp.mail_from =
+email_to = {{ckan_email_to}}
+error_email_from = {{ckan_error_email_from}}
+smtp.server = {{ckan_smtp_server}}
+smtp.starttls = {{ckan_smtp_starttls}}
+smtp.user = {{ckan_smtp_user}}
+smtp.password = {{ckan_smtp_password}}
+smtp.mail_from = {{ckan_email_from}}
 
 
 ## Logging configuration
