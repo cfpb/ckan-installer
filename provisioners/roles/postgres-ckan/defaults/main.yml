@@ -5,3 +5,7 @@ ckan_db_user: ckan_default
 ckan_datastore_db_name: datastore_default
 ckan_datastore_db_user: datastore_default
 # don't create a default for passwords, force people to override this
+
+postgres_login_host: localhost
+postgres_login_user: postgres
+postgres_port: 5432

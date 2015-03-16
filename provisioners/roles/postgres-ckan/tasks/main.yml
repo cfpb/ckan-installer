@@ -1,49 +1,13 @@
 ---
 # tasks file for postgres-ckan
-- template:
-    src=CentOS-Base.repo.j2
-    dest=/etc/yum.repos.d/CentOS-Base.repo
-  sudo: yes
-
-# - name: yum install postgres 9
-#   yum: name=http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-centos93-9.3-1.noarch.rpm
-#   sudo: yes
-
-- name: ensure PGDG Yum repo is installed
-  shell: rpm -Uvh http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-centos93-9.3-1.noarch.rpm 
-    creates=/etc/yum.repos.d/pgdg-93-centos.repo
-  sudo: yes
-
-- name: install postgres dependencies
-  yum: name={{item}}
-  with_items: 
-    - postgresql93-devel
-    - postgresql93-server
-    - postgresql93-libs
-    - python-psycopg2
-  sudo: yes
-
-- name: determine if db initialized
-  stat: path=/var/lib/pgsql/9.3/data/pg_hba.conf
-  ignore_errors: true
-  register: db_init
-  sudo: yes
-
-- name: initialize postgres
-  shell: service postgresql-9.3 initdb 
-  when: not db_init.stat.exists
-  register: init_db_result
-  failed_when: "'FAILED' in init_db_result.stderr" 
-  sudo: yes
-
-- name: start postgres db
-  service: name=postgresql-9.3 state=started enabled=yes
-  sudo: yes
-
 - name: create postgres db
   postgresql_db:
     name={{ckan_db_name}}
     encoding='UTF-8'
+    login_host={{postgres_login_host}}
+    login_user={{postgres_login_user}}
+    login_password={{postgres_login_password}}
+    port={{postgres_port}}
   sudo: yes
   register: create_ckan_db
   sudo_user: postgres
@@ -63,6 +27,10 @@
     name={{ckan_datastore_db_name}}
     encoding='UTF-8'
     owner="{{ckan_db_user}}"
+    login_host={{postgres_login_host}}
+    login_user={{postgres_login_user}}
+    login_password={{postgres_login_password}}
+    port={{postgres_port}}
   sudo: yes
   register: create_datastore_db
   sudo_user: postgres
@@ -77,15 +45,4 @@
   register: create_datastore_db_user
   sudo_user: postgres
 
-- name: setup pg_hba.conf
-  template:
-    src=pg_hba.conf.j2
-    dest=/var/lib/pgsql/9.3/data/pg_hba.conf
-    owner=postgres
-  register: pg_hba
-  sudo: yes
 
-- name: restart pgsql
-  service: name=postgresql-9.3 state=restarted
-  when: pg_hba|changed
-  sudo: yes
