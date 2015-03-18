@@ -106,11 +106,3 @@
         job="echo $(date) >> {{ckan_log_dir}}/email_flush.log && echo '{}' | {{ckan_venv}}/bin/paster post -c {{ckan_config_dir}}/config.ini /api/action/send_email_notifications >> {{ckan_log_dir}}/email_flush.log && echo '' >> {{ckan_log_dir}}/email_flush.log"
         user="{{ckan_user}}"
   sudo: yes
-
-# Stop iptables because it blocks some of the necessary ports for 
-# ckan to function properly.
-# TODO: Find an actual solution to this problem instead of disabling
-# iptables
-- name: stop iptables
-  service: name=iptables state=stopped
-  sudo: yes
