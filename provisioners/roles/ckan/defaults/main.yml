@@ -21,3 +21,5 @@ ckan_smtp_password: ""
 # default: every 30 minutes.
 ckan_email_flush_interval: "0,30"
 
+# Plugin Settings
+ckan_plugins: stats text_preview recline_preview datastore ckanext_cfpb_extrafields
