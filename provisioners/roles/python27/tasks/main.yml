@@ -85,6 +85,7 @@
     path=/usr/bin/pip
     src=/usr/local/bin/pip2.7
     state=link
+    force=yes
   sudo: yes
 
 - name: pip install virtualenv
