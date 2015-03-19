@@ -1,0 +1,108 @@
+---
+# tasks file for ckan
+- name: Yum install any CKAN dependencies
+  yum: name={{ item }} state=present
+  with_items:
+    - git
+  sudo: yes
+
+- name: create CKAN directory
+  file:
+    path="{{ckan_install_dir}}"
+    state=directory
+    owner="{{ckan_user}}"
+    group="{{ckan_group}}"
+  sudo: yes
+
+- name: pip install CKAN
+  pip: 
+    name="git+https://github.com/ckan/ckan.git@{{ckan_version_tag}}#egg=ckan"
+    virtualenv="{{ckan_venv}}"
+    virtualenv_site_packages=no
+    extra_args="-e"
+
+- name: pip install CKAN requirements
+  pip:
+    requirements="{{ckan_venv}}/src/ckan/requirements.txt"
+    virtualenv="{{ckan_venv}}"
+  environment: 
+    # This is a bit of a hack so that we don't have to spend
+    # time gathering facts. We could just use anisble_env.PATH
+    PATH: /usr/pgsql-9.3/bin:/usr/local/bin:/bin:/usr/bin
+
+- name: create CKAN config directory
+  file:
+    path="{{ckan_config_dir}}"
+    state=directory
+    owner="{{ckan_user}}"
+    group="{{ckan_group}}"
+  sudo: yes
+
+- name: create CKAN uploads directory
+  file:
+    path="{{ckan_file_storage_dir}}"
+    state=directory
+    owner="{{apache_user}}"
+    group="{{apache_group}}"
+  sudo: yes
+
+- name: create CKAN log directory
+  file:
+    path="{{ckan_log_dir}}"
+    state=directory
+    owner="{{ckan_user}}"
+    group="{{ckan_group}}"
+  sudo: yes
+
+- name: create CKAN config file
+  template: 
+    src="config.ini.j2"
+    dest="{{ckan_config_dir}}/config.ini"
+  notify: restart apache
+
+- name: create CKAN solr schema
+  template:
+    src=schema.xml.j2
+    dest="{{solr_home}}/solr/collection1/conf/schema.xml"
+  notify: restart solr
+
+- name: set read-only ckan user
+  shell: source {{ckan_venv}}/bin/activate && paster --plugin=ckan datastore set-permissions postgres --config {{ckan_config_dir}}/config.ini
+    chdir="{{ckan_venv}}/src/ckan"
+  when: create_datastore_db|changed or create_datastore_db_user|changed or create_ckan_db|changed or create_ckan_db_user|changed
+  notify: restart postgres
+
+- name: create CKAN tables in database
+  shell: source {{ckan_venv}}/bin/activate && paster db init -c {{ckan_config_dir}}/config.ini
+    chdir="{{ckan_venv}}/src/ckan"
+  sudo: yes
+  sudo_user: postgres
+  when: create_datastore_db|changed or create_datastore_db_user|changed or create_ckan_db|changed or create_ckan_db_user|changed
+  notify: restart postgres
+
+- name: create symlink to who.ini
+  file: 
+    src={{ckan_venv}}/src/ckan/who.ini
+    dest=/etc/ckan/default/who.ini
+    state=link
+
+- name: create CKAN wsgi file
+  template: 
+    src="apache.wsgi.j2"
+    dest="{{ckan_config_dir}}/apache.wsgi"
+  notify: restart apache
+
+- name: create CKAN apache config file
+  template:
+    src="ckan.conf.j2"
+    dest="/etc/httpd/conf.d/ckan.conf"
+  sudo: yes
+  notify: restart apache
+
+
+- name: create crontab for sending activity stream emails
+  cron: name="ckan_send_emails"
+        minute={{ckan_email_flush_interval}}
+        job="echo $(date) >> {{ckan_log_dir}}/email_flush.log && echo '{}' | {{ckan_venv}}/bin/paster post -c {{ckan_config_dir}}/config.ini /api/action/send_email_notifications >> {{ckan_log_dir}}/email_flush.log && echo '' >> {{ckan_log_dir}}/email_flush.log"
+        user="{{ckan_user}}"
+  sudo: yes

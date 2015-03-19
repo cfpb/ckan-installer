@@ -37,3 +37,8 @@ coverage.xml
 node_modules/
 bower_components/
 .grunt/
+
+# Vagrant #
+##########
+.vagrant
+vagrant_ansible_inventory_default

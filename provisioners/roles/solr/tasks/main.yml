@@ -1,0 +1,55 @@
+---
+# tasks file for solr
+- name: install java
+  yum: name=java-1.7.0-openjdk-devel
+  sudo: yes
+
+- name: download solr source binary
+  get_url: 
+    url=http://archive.apache.org/dist/lucene/solr/4.9.1/solr-4.9.1.tgz
+    dest=/tmp/solr-4.9.1.tgz
+    timeout=30
+
+- name: create solr home
+  file: 
+    path="{{solr_home}}"
+    state=directory
+    owner=vagrant
+    group=vagrant
+  sudo: yes
+
+- name: unzip solr source binary
+  command: tar zxf solr-4.9.1.tgz
+    creates=/tmp/solr-4.9.1/
+    chdir=/tmp
+
+- name: copy solr binary to solr home
+  command: cp -R /tmp/solr-4.9.1/example/. {{solr_home}}
+    creates="{{solr_home}}/README.txt"
+
+- name: create solr service entry
+  template: 
+    src=solr.sh.j2
+    dest=/etc/init.d/solr
+    mode=755
+  sudo: yes
+
+- name: create config for jetty
+  template: 
+    src=jetty.j2
+    dest=/etc/default/jetty
+    mode=755
+  sudo: yes
+
+- name: start solr service
+  service: name=solr state=started enabled=yes
+  sudo: yes
+
+- name: create a dedicated solr user for the service
+  user: 
+    name="{{solr_user}}"
+    comment="Apache Solr"
+    createhome=no
+    system=yes
+    password="{{solr_user_password}}"
+  sudo: yes

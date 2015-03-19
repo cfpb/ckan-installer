@@ -1,0 +1,8 @@
+---
+# defaults file for solr
+solr_home: /opt/solr
+java_home: /usr/lib/jvm/java-1.6.0-openjdk.x86_64/bin/java
+solr_user: solr
+solr_user_password: $6$rounds=100000$IGDBTmZvVy2T1Edh$jNd.4ZnMV2woq.O9yDfneeJNDdQ..QDGLW897ymS9zQIiM7qiu40PeRPIioArDQCJOf1qDjV1yeWCjOeI/SFA/
+jetty_user: vagrant
+jetty_log_path: /var/log/solr

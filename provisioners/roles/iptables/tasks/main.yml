@@ -1,0 +1,10 @@
+---
+# tasks file for iptables
+
+# Stop iptables because it blocks some of the necessary ports for 
+# ckan to function properly.
+# TODO: Find an actual solution to this problem instead of disabling
+# iptables
+- name: stop iptables
+  service: name=iptables state=stopped
+  sudo: yes
