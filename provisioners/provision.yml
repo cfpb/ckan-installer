@@ -5,6 +5,7 @@
   gather_facts: False
   roles:
     - postgres
+    - postgres-ckan
     - solr
     - iptables
 
@@ -12,6 +13,5 @@
   gather_facts: False
   roles:
     - python27
-    - postgres-ckan
     - apache
     - ckan

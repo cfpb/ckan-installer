@@ -1,9 +1,9 @@
 ---
 # defaults file for postgres-ckan
-ckan_db_name: ckan_default
-ckan_db_user: ckan_default
-ckan_datastore_db_name: datastore_default
-ckan_datastore_db_user: datastore_default
+ckan_db_name: ckan
+ckan_db_user: svc_ckan
+ckan_datastore_db_name: ckan_datastore
+ckan_datastore_db_user: svc_ckan_datastore
 # don't create a default for passwords, force people to override this
 
 postgres_login_host: localhost

@@ -13,9 +13,9 @@ ckan_site_url: ""
 # postgres settings
 postgres_login_host: localhost
 postgres_port: 5432
-ckan_db_name: ckan_default
-ckan_db_user: ckan_default
-ckan_datastore_db_name: datastore_default
+ckan_db_name: ckan
+ckan_db_user: svc_ckan
+ckan_datastore_db_name: ckan_datastore
 
 # solr settings
 solr_url: http://127.0.0.1:8983/solr

@@ -1,6 +1,6 @@
 ---
 ckan_install_dir: /usr/lib/ckan
 ckan_venv: "{{ckan_install_dir}}/default"
-ckan_db_name: ckan_default
-ckan_datastore_db_name: datastore_default
+ckan_db_name: ckan
+ckan_datastore_db_name: ckan_datastore
 ckan_config_dir: /etc/ckan/default
