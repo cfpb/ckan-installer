@@ -2,6 +2,7 @@
 - name: Ensure dependencies are installed
   yum: name={{ item }} state=present
   with_items:
+    - gcc
     - zlib-devel
     - bzip2-devel
     - openssl-devel
