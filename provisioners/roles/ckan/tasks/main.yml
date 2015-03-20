@@ -20,6 +20,11 @@
     virtualenv="{{ckan_venv}}"
     virtualenv_site_packages=no
     extra_args="-e"
+  environment: 
+    # Depending on the user running this command, we need
+    # to ensure /usr/local/bin is in the path so that 
+    # virtualenv is accessible.  
+    PATH: /usr/local/bin:/bin:/usr/bin
 
 - name: pip install CKAN requirements
   pip:
