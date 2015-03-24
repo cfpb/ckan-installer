@@ -6,7 +6,7 @@
     - git
     # Both are needed to install psycopg2
     - postgresql-devel
-    - postgresql-lib
+    - postgresql-libs
     - libselinux-python
   sudo: yes
 
