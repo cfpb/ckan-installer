@@ -4,6 +4,10 @@
   yum: name={{ item }} state=present
   with_items:
     - git
+    # Both are needed to install psycopg2
+    - postgresql-devel
+    - postgresql-lib
+    - libselinux-python
   sudo: yes
 
 - name: create CKAN directory
@@ -64,12 +68,6 @@
     src="config.ini.j2"
     dest="{{ckan_config_dir}}/config.ini"
   notify: restart apache
-
-- name: create CKAN solr schema
-  template:
-    src=schema.xml.j2
-    dest="{{solr_home}}/solr/collection1/conf/schema.xml"
-  notify: restart solr
 
 - name: set read-only ckan user
   shell: source {{ckan_venv}}/bin/activate && paster --plugin=ckan datastore set-permissions postgres --config {{ckan_config_dir}}/config.ini

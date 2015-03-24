@@ -41,6 +41,12 @@
     mode=755
   sudo: yes
 
+- name: create CKAN solr schema
+  template:
+    src=schema.xml.j2
+    dest="{{solr_home}}/solr/collection1/conf/schema.xml"
+  notify: restart solr
+
 - name: start solr service
   service: name=solr state=started enabled=yes
   sudo: yes
