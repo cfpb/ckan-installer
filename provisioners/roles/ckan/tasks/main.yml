@@ -72,7 +72,7 @@
 - name: set read-only ckan user
   shell: source {{ckan_venv}}/bin/activate && paster --plugin=ckan datastore set-permissions postgres --config {{ckan_config_dir}}/config.ini
     chdir="{{ckan_venv}}/src/ckan"
-  when: create_datastore_db|changed or create_datastore_db_user|changed or create_ckan_db|changed or create_ckan_db_user|changed
+  #when: create_datastore_db|changed or create_datastore_db_user|changed or create_ckan_db|changed or create_ckan_db_user|changed
   notify: restart postgres
 
 - name: create CKAN tables in database
@@ -80,7 +80,7 @@
     chdir="{{ckan_venv}}/src/ckan"
   sudo: yes
   sudo_user: postgres
-  when: create_datastore_db|changed or create_datastore_db_user|changed or create_ckan_db|changed or create_ckan_db_user|changed
+  #when: create_datastore_db|changed or create_datastore_db_user|changed or create_ckan_db|changed or create_ckan_db_user|changed
   notify: restart postgres
 
 - name: create symlink to who.ini
