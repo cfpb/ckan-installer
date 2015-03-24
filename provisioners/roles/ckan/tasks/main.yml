@@ -80,7 +80,7 @@
   shell: source {{ckan_venv}}/bin/activate && paster db init -c {{ckan_config_dir}}/config.ini
     chdir="{{ckan_venv}}/src/ckan"
   sudo: yes
-  sudo_user: postgres
+  #sudo_user: postgres
   #when: create_datastore_db|changed or create_datastore_db_user|changed or create_ckan_db|changed or create_ckan_db_user|changed
   notify: restart postgres
 
