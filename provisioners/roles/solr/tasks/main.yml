@@ -4,6 +4,10 @@
   yum: name=java-1.7.0-openjdk-devel
   sudo: yes
 
+- name: install libselinux-python
+  yum: name=libselinux-python
+  sudo: yes
+
 - name: download solr source binary
   get_url: 
     url=http://archive.apache.org/dist/lucene/solr/4.9.1/solr-4.9.1.tgz
