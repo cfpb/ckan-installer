@@ -40,6 +40,10 @@
   command: cp -R /tmp/solr-4.9.1/example/. {{solr_home}}
     creates="{{solr_home}}/README.txt"
 
+- name: chown the solr home directory
+  command: chown -R {{solr_user}}:{{solr_group}} {{solr_home}}
+  sudo: yes
+
 - name: create solr service entry
   template: 
     src=solr.sh.j2
