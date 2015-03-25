@@ -10,12 +10,21 @@
     dest=/tmp/solr-4.9.1.tgz
     timeout=30
 
+- name: create a dedicated solr user for the service
+  user: 
+    name="{{solr_user}}"
+    comment="Apache Solr"
+    createhome=no
+    system=yes
+    password="{{solr_user_password}}"
+  sudo: yes
+
 - name: create solr home
   file: 
     path="{{solr_home}}"
     state=directory
-    owner=vagrant
-    group=vagrant
+    owner="{{solr_user}}"
+    group="{{solr_group}}"
   sudo: yes
 
 - name: unzip solr source binary
@@ -51,11 +60,3 @@
   service: name=solr state=started enabled=yes
   sudo: yes
 
-- name: create a dedicated solr user for the service
-  user: 
-    name="{{solr_user}}"
-    comment="Apache Solr"
-    createhome=no
-    system=yes
-    password="{{solr_user_password}}"
-  sudo: yes
