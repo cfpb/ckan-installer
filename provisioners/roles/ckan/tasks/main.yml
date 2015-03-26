@@ -94,6 +94,7 @@
   template: 
     src="apache.wsgi.j2"
     dest="{{ckan_config_dir}}/apache.wsgi"
+    mode=0755
   notify: restart apache
 
 - name: create CKAN apache config file
