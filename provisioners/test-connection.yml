@@ -1,9 +1,13 @@
 ---
 - hosts: all
-  sudo: yes
+
   tasks:
+
+    - name: test non-sudo access
+      shell: pwd && ls -la
+      sudo: no
+      
     - name: test sudo access
       shell: pwd && ls -la
-      register: result
+      sudo: yes
 
-    - debug: var=result
