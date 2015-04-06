@@ -1,0 +1,9 @@
+---
+- hosts: all
+  sudo: yes
+  tasks:
+    - name: test sudo access
+      shell: pwd && ls -la
+      register: result
+
+    - debug: var=result
