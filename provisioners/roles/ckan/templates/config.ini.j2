@@ -94,7 +94,14 @@ solr_url = {{solr_url}}
 #       Add ``pdf_preview`` to enable the resource preview for PDFs
 #		Add ``resource_proxy`` to enable resorce proxying and get around the
 #		same origin policy
-ckan.plugins = {{ckan_plugins}}
+ckan.plugins = {{ckan_plugins}} {% for plugin in ckan_custom_plugins %}{{plugin.name}} {% endfor %}
+
+{% for plugin in ckan_custom_plugins %}
+  {% if plugin.config is defined %}
+    {{plugin.config}}
+
+  {% endif %}
+{% endfor %}
 
 # Define which views should be created by default
 # (plugins must be loaded in ckan.plugins)
@@ -116,7 +123,6 @@ ckan.preview.loadable = html htm rdf+xml owl+xml xml n3 n-triples turtle plain a
 #ckan.recaptcha.privatekey =
 #licenses_group_url = http://licenses.opendefinition.org/licenses/groups/ckan.json
 # ckan.template_footer_end =
-
 
 ## Internationalisation Settings
 ckan.locale_default = en

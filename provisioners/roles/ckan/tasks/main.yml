@@ -4,10 +4,12 @@
   yum: name={{ item }} state=present
   with_items:
     - git
-    # Both are needed to install psycopg2
+    # needed to install psycopg2
     - postgresql-devel
     - postgresql-libs
     - libselinux-python
+    # needed if installing ldap-based authentication
+    - python-ldap
   sudo: yes
 
 - name: create CKAN directory
@@ -16,6 +18,8 @@
     state=directory
     owner="{{ckan_user}}"
     group="{{ckan_group}}"
+    mode=0755
+    recurse=yes
   sudo: yes
 
 - name: pip install CKAN
@@ -39,6 +43,29 @@
     # time gathering facts. We could just use anisble_env.PATH
     PATH: /usr/pgsql-9.3/bin:/usr/local/bin:/bin:/usr/bin
 
+# TODO: Write a custom module that installs the custom plugins
+- name: pip install CKAN any custom plugins
+  pip: 
+    name="git+{{item.url}}#egg={{item.egg_name}}"
+    virtualenv="{{ckan_venv}}"
+    virtualenv_site_packages=no
+    extra_args="-e"
+  with_items: ckan_custom_plugins
+  when: ckan_custom_plugins is defined
+
+- name: check if custom plugin has requirements.txt file
+  stat: path="{{ckan_venv}}/src/{{item.egg_name|regex_replace('_', '-')}}/requirements.txt"
+  with_items: ckan_custom_plugins
+  when: ckan_custom_plugins is defined
+  register: plugins_requirements
+
+- name: pip install the requirements of custom plugins
+  pip:
+    requirements="{{ckan_venv}}/src/{{item.item.egg_name|regex_replace('_', '-')}}/requirements.txt"
+    virtualenv="{{ckan_venv}}"
+  with_items: plugins_requirements.results
+  when: item.stat.exists
+
 - name: create CKAN config directory
   file:
     path="{{ckan_config_dir}}"
@@ -51,8 +78,8 @@
   file:
     path="{{ckan_file_storage_dir}}"
     state=directory
-    owner="{{apache_user}}"
-    group="{{apache_group}}"
+    owner="{{ckan_user}}"
+    group="{{ckan_group}}"
   sudo: yes
 
 - name: create CKAN log directory
@@ -70,11 +97,12 @@
   notify: restart apache
 
 - name: set read-only ckan user
-  shell: source {{ckan_venv}}/bin/activate && paster --plugin=ckan datastore set-permissions postgres --config {{ckan_config_dir}}/config.ini
+  shell: source {{ckan_venv}}/bin/activate && paster --plugin=ckan datastore set-permissions -c {{ckan_config_dir}}/config.ini | sudo -u postgres psql --set ON_ERROR_STOP=1
     chdir="{{ckan_venv}}/src/ckan"
   when: groups.has_key('local') and inventory_hostname in groups.local
   #when: create_datastore_db|changed or create_datastore_db_user|changed or create_ckan_db|changed or create_ckan_db_user|changed
   notify: restart postgres
+  sudo: yes
 
 - name: create CKAN tables in database
   shell: source {{ckan_venv}}/bin/activate && paster db init -c {{ckan_config_dir}}/config.ini

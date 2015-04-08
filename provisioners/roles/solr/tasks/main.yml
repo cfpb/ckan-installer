@@ -35,14 +35,18 @@
   command: tar zxf solr-4.9.1.tgz
     creates=/tmp/solr-4.9.1/
     chdir=/tmp
+  sudo: yes
+  sudo_user: "{{solr_user}}"
 
 - name: copy solr binary to solr home
   command: cp -R /tmp/solr-4.9.1/example/. {{solr_home}}
     creates="{{solr_home}}/README.txt"
-
-- name: chown the solr home directory
-  command: chown -R {{solr_user}}:{{solr_group}} {{solr_home}}
   sudo: yes
+  sudo_user: "{{solr_user}}"
+
+# - name: chown the solr home directory
+#   command: chown -R {{solr_user}}:{{solr_group}} {{solr_home}}
+#   sudo: yes
 
 - name: create solr service entry
   template: 
@@ -63,6 +67,8 @@
     src=schema.xml.j2
     dest="{{solr_home}}/solr/collection1/conf/schema.xml"
   notify: restart solr
+  sudo: yes
+  sudo_user: "{{solr_user}}"
 
 - name: start solr service
   service: name=solr state=started enabled=yes
