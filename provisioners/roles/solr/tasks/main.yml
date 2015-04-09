@@ -4,28 +4,49 @@
   yum: name=java-1.7.0-openjdk-devel
   sudo: yes
 
+- name: install libselinux-python
+  yum: name=libselinux-python
+  sudo: yes
+
 - name: download solr source binary
   get_url: 
     url=http://archive.apache.org/dist/lucene/solr/4.9.1/solr-4.9.1.tgz
     dest=/tmp/solr-4.9.1.tgz
     timeout=30
 
+- name: create a dedicated solr user for the service
+  user: 
+    name="{{solr_user}}"
+    comment="Apache Solr"
+    createhome=no
+    system=yes
+    password="{{solr_user_password}}"
+  sudo: yes
+
 - name: create solr home
   file: 
     path="{{solr_home}}"
     state=directory
-    owner=vagrant
-    group=vagrant
+    owner="{{solr_user}}"
+    group="{{solr_group}}"
   sudo: yes
 
 - name: unzip solr source binary
   command: tar zxf solr-4.9.1.tgz
     creates=/tmp/solr-4.9.1/
     chdir=/tmp
+  sudo: yes
+  sudo_user: "{{solr_user}}"
 
 - name: copy solr binary to solr home
   command: cp -R /tmp/solr-4.9.1/example/. {{solr_home}}
     creates="{{solr_home}}/README.txt"
+  sudo: yes
+  sudo_user: "{{solr_user}}"
+
+# - name: chown the solr home directory
+#   command: chown -R {{solr_user}}:{{solr_group}} {{solr_home}}
+#   sudo: yes
 
 - name: create solr service entry
   template: 
@@ -41,15 +62,15 @@
     mode=755
   sudo: yes
 
+- name: create CKAN solr schema
+  template:
+    src=schema.xml.j2
+    dest="{{solr_home}}/solr/collection1/conf/schema.xml"
+  notify: restart solr
+  sudo: yes
+  sudo_user: "{{solr_user}}"
+
 - name: start solr service
   service: name=solr state=started enabled=yes
   sudo: yes
 
-- name: create a dedicated solr user for the service
-  user: 
-    name="{{solr_user}}"
-    comment="Apache Solr"
-    createhome=no
-    system=yes
-    password="{{solr_user_password}}"
-  sudo: yes
