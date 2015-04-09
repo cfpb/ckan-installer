@@ -1,9 +1,6 @@
 ---
 # handlers file for ckan
-- name: restart solr
-  service: name=solr state=restarted sleep=1
-  sudo: yes
-
 - name: restart postgres
   service: name=postgresql-9.3 state=restarted sleep=1
+  when: groups.has_key('local') and inventory_hostname in groups.local
   sudo: yes

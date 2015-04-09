@@ -10,7 +10,7 @@ WSGISocketPrefix /var/run/wsgi
     WSGIPassAuthorization On
 
     # Deploy as a daemon (avoids conflicts between CKAN instances).
-    WSGIDaemonProcess ckan_default user={{apache_user}} group={{apache_group}} display-name=ckan_default processes=2 threads=15 
+    WSGIDaemonProcess ckan_default user={{ckan_user}} group={{ckan_group}} display-name=ckan_default processes=2 threads=15 
 
     WSGIProcessGroup ckan_default
 

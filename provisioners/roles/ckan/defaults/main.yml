@@ -1,5 +1,6 @@
 ---
 # defaults file for ckan
+ckan_version_tag: ckan-2.3
 solr_home: /opt/solr
 apache_user: vagrant
 apache_group: vagrant
@@ -13,9 +14,9 @@ ckan_site_url: ""
 # postgres settings
 postgres_login_host: localhost
 postgres_port: 5432
-ckan_db_name: ckan_default
-ckan_db_user: ckan_default
-ckan_datastore_db_name: datastore_default
+ckan_db_name: ckan
+ckan_db_user: svc_ckan
+ckan_datastore_db_name: ckan_datastore
 
 # solr settings
 solr_url: http://127.0.0.1:8983/solr
@@ -32,4 +33,4 @@ ckan_smtp_password: ""
 ckan_email_flush_interval: "0,30"
 
 # Plugin Settings
-ckan_plugins: stats text_preview recline_preview datastore ckanext_cfpb_extrafields
+ckan_plugins: stats text_preview recline_preview datastore
