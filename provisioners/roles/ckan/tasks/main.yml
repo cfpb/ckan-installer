@@ -132,6 +132,20 @@
   sudo: yes
   notify: restart apache
 
+- name: ensure correct ownership for all ckan directories
+  file:
+      path="{{item}}"
+      state=directory
+      owner="{{ckan_user}}"
+      group="{{ckan_group}}"
+      recurse=true
+  with_items:
+    - "{{ckan_install_dir}}"
+    - "{{ckan_config_dir}}"
+    - "{{ckan_log_dir}}"
+  notify: restart apache
+  sudo: yes
+
 
 - name: create crontab for sending activity stream emails
   cron: name="ckan_send_emails"

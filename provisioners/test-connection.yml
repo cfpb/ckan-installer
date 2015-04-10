@@ -1,0 +1,13 @@
+---
+- hosts: all
+
+  tasks:
+
+    - name: test non-sudo access
+      shell: pwd && ls -la
+      sudo: no
+      
+    - name: test sudo access
+      shell: pwd && ls -la
+      sudo: yes
+
