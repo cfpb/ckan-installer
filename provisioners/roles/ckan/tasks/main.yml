@@ -28,6 +28,7 @@
     virtualenv="{{ckan_venv}}"
     virtualenv_site_packages=no
     extra_args="-e"
+  sudo: yes
   environment: 
     # Depending on the user running this command, we need
     # to ensure /usr/local/bin is in the path so that 
@@ -38,7 +39,8 @@
   pip:
     requirements="{{ckan_venv}}/src/ckan/requirements.txt"
     virtualenv="{{ckan_venv}}"
-  environment: 
+  sudo: yes
+  environment:
     # This is a bit of a hack so that we don't have to spend
     # time gathering facts. We could just use anisble_env.PATH
     PATH: /usr/pgsql-9.3/bin:/usr/local/bin:/bin:/usr/bin
@@ -52,6 +54,7 @@
     extra_args="-e"
   with_items: ckan_custom_plugins
   when: ckan_custom_plugins is defined
+  sudo: yes
 
 - name: check if custom plugin has requirements.txt file
   stat: path="{{ckan_venv}}/src/{{item.egg_name|regex_replace('_', '-')}}/requirements.txt"
@@ -65,6 +68,7 @@
     virtualenv="{{ckan_venv}}"
   with_items: plugins_requirements.results
   when: item.stat.exists
+  sudo: yes
 
 - name: create CKAN config directory
   file:
