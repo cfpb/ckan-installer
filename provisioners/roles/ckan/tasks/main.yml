@@ -34,7 +34,6 @@
     # virtualenv is accessible.  
     PATH: /usr/local/bin:/bin:/usr/bin
   sudo: yes
-  sudo_user: "{{ckan_user}}"
 
 - name: pip install CKAN requirements
   pip:
@@ -45,7 +44,6 @@
     # time gathering facts. We could just use anisble_env.PATH
     PATH: /usr/pgsql-9.3/bin:/usr/local/bin:/bin:/usr/bin
   sudo: yes
-  sudo_user: "{{ckan_user}}"
 
 # TODO: Write a custom module that installs the custom plugins
 - name: pip install CKAN any custom plugins
@@ -57,7 +55,6 @@
   with_items: ckan_custom_plugins
   when: ckan_custom_plugins is defined
   sudo: yes
-  sudo_user: "{{ckan_user}}"
 
 - name: check if custom plugin has requirements.txt file
   stat: path="{{ckan_venv}}/src/{{item.egg_name|regex_replace('_', '-')}}/requirements.txt"
@@ -65,7 +62,6 @@
   when: ckan_custom_plugins is defined
   register: plugins_requirements
   sudo: yes
-  sudo_user: "{{ckan_user}}"
 
 - name: pip install the requirements of custom plugins
   pip:
@@ -74,7 +70,6 @@
   with_items: plugins_requirements.results
   when: item.stat.exists
   sudo: yes
-  sudo_user: "{{ckan_user}}"
 
 - name: create CKAN config directory
   file:
@@ -106,7 +101,6 @@
     dest="{{ckan_config_dir}}/config.ini"
   notify: restart apache
   sudo: yes
-  sudo_user: "{{ckan_user}}"
 
 - name: set read-only ckan user
   shell: source {{ckan_venv}}/bin/activate && paster --plugin=ckan datastore set-permissions -c {{ckan_config_dir}}/config.ini | sudo -u postgres psql --set ON_ERROR_STOP=1
@@ -137,7 +131,6 @@
     mode=0755
   notify: restart apache
   sudo: yes
-  sudo_user: "{{ckan_user}}"
 
 - name: create CKAN apache config file
   template:
