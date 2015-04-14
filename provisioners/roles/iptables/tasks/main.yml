@@ -2,9 +2,10 @@
 # tasks file for iptables
 
 # Stop iptables because it blocks some of the necessary ports for 
-# ckan to function properly.
+# ckan to function properly. We only run this locally...
 # TODO: Find an actual solution to this problem instead of disabling
 # iptables
 - name: stop iptables
   service: name=iptables state=stopped
+  when: groups.has_key('local') and inventory_hostname in groups.local
   sudo: yes

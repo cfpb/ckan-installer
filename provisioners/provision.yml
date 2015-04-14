@@ -1,15 +1,23 @@
 ---
 # Provisions the CKAN VM from scratch
 
-- hosts: local
+- hosts: db
   gather_facts: False
   roles:
     - postgres
     - postgres-ckan
+
+- hosts: search
+  gather_facts: False
+  roles:
     - solr
+
+- hosts: local
+  gather_facts: False
+  roles:
     - iptables
 
-- hosts: all
+- hosts: app
   gather_facts: False
   roles:
     - python27
