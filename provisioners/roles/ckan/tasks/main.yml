@@ -33,6 +33,7 @@
     # to ensure /usr/local/bin is in the path so that 
     # virtualenv is accessible.  
     PATH: /usr/local/bin:/bin:/usr/bin
+  sudo: yes
 
 - name: pip install CKAN requirements
   pip:
@@ -42,6 +43,7 @@
     # This is a bit of a hack so that we don't have to spend
     # time gathering facts. We could just use anisble_env.PATH
     PATH: /usr/pgsql-9.3/bin:/usr/local/bin:/bin:/usr/bin
+  sudo: yes
 
 # TODO: Write a custom module that installs the custom plugins
 - name: pip install CKAN any custom plugins
@@ -52,12 +54,14 @@
     extra_args="-e"
   with_items: ckan_custom_plugins
   when: ckan_custom_plugins is defined
+  sudo: yes
 
 - name: check if custom plugin has requirements.txt file
   stat: path="{{ckan_venv}}/src/{{item.egg_name|regex_replace('_', '-')}}/requirements.txt"
   with_items: ckan_custom_plugins
   when: ckan_custom_plugins is defined
   register: plugins_requirements
+  sudo: yes
 
 - name: pip install the requirements of custom plugins
   pip:
@@ -65,6 +69,7 @@
     virtualenv="{{ckan_venv}}"
   with_items: plugins_requirements.results
   when: item.stat.exists
+  sudo: yes
 
 - name: create CKAN config directory
   file:
@@ -95,6 +100,7 @@
     src="config.ini.j2"
     dest="{{ckan_config_dir}}/config.ini"
   notify: restart apache
+  sudo: yes
 
 - name: set read-only ckan user
   shell: source {{ckan_venv}}/bin/activate && paster --plugin=ckan datastore set-permissions -c {{ckan_config_dir}}/config.ini | sudo -u postgres psql --set ON_ERROR_STOP=1
@@ -117,6 +123,7 @@
     src={{ckan_venv}}/src/ckan/who.ini
     dest=/etc/ckan/default/who.ini
     state=link
+  sudo: yes
 
 - name: create CKAN wsgi file
   template: 
@@ -124,6 +131,7 @@
     dest="{{ckan_config_dir}}/apache.wsgi"
     mode=0755
   notify: restart apache
+  sudo: yes
 
 - name: create CKAN apache config file
   template:
@@ -145,7 +153,6 @@
     - "{{ckan_log_dir}}"
   notify: restart apache
   sudo: yes
-
 
 - name: create crontab for sending activity stream emails
   cron: name="ckan_send_emails"
