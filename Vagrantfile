@@ -93,7 +93,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # The generated inventory file is located at:
     # .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory
     ansible.groups = {
-        "local" => ["default"]
+        "local" => ["default"],
+        "search" => ["default"],
+        "db" => ["default"],
+        "app" => ["default"]
     }
   end
   
