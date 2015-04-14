@@ -123,6 +123,7 @@
     src={{ckan_venv}}/src/ckan/who.ini
     dest=/etc/ckan/default/who.ini
     state=link
+  sudo: yes
 
 - name: create CKAN wsgi file
   template: 
