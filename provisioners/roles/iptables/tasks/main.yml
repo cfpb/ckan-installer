@@ -6,6 +6,6 @@
 # TODO: Find an actual solution to this problem instead of disabling
 # iptables
 - name: stop iptables
-  service: name=iptables state=stopped
+  service: name=iptables state=stopped enabled=false
   when: groups.has_key('local') and inventory_hostname in groups.local
   sudo: yes
