@@ -12,7 +12,7 @@
   get_url: 
     url=http://archive.apache.org/dist/lucene/solr/4.9.1/solr-4.9.1.tgz
     dest=/tmp/solr-4.9.1.tgz
-    timeout=30
+    timeout=60
 
 - name: create a dedicated solr user for the service
   user: 
