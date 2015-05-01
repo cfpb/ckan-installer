@@ -126,7 +126,7 @@
 - name: create symlink to who.ini
   file: 
     src={{ckan_venv}}/src/ckan/who.ini
-    dest=/etc/ckan/default/who.ini
+    dest={{ckan_config_dir}}/who.ini
     state=link
   sudo: yes
 
