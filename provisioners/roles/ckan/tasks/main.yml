@@ -42,7 +42,7 @@
   environment: 
     # This is a bit of a hack so that we don't have to spend
     # time gathering facts. We could just use anisble_env.PATH
-    PATH: /usr/pgsql-9.3/bin:/usr/local/bin:/bin:/usr/bin
+    PATH: /usr/pgsql-9.4/bin:/usr/local/bin:/bin:/usr/bin
   sudo: yes
 
 # TODO: Write a custom module that installs the custom plugins

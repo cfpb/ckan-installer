@@ -6,45 +6,45 @@
   sudo: yes
 
 - name: ensure PGDG Yum repo is installed
-  shell: rpm -Uvh http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-centos93-9.3-1.noarch.rpm 
-    creates=/etc/yum.repos.d/pgdg-93-centos.repo
+  shell: rpm -Uvh http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-centos94-9.4-1.noarch.rpm 
+    creates=/etc/yum.repos.d/pgdg-94-centos.repo
   sudo: yes
 
 - name: install postgres dependencies
   yum: name={{item}}
   with_items: 
-    - postgresql93-devel
-    - postgresql93-server
-    - postgresql93-libs
+    - postgresql94-devel
+    - postgresql94-server
+    - postgresql94-libs
     - python-psycopg2
   sudo: yes
 
 - name: determine if db initialized
-  stat: path=/var/lib/pgsql/9.3/data/pg_hba.conf
+  stat: path=/var/lib/pgsql/9.4/data/pg_hba.conf
   ignore_errors: true
   register: db_init
   sudo: yes
 
 - name: initialize postgres
-  shell: service postgresql-9.3 initdb 
+  shell: service postgresql-9.4 initdb 
   when: not db_init.stat.exists
   register: init_db_result
   failed_when: "'FAILED' in init_db_result.stderr" 
   sudo: yes
 
 - name: start postgres db
-  service: name=postgresql-9.3 state=started enabled=yes
+  service: name=postgresql-9.4 state=started enabled=yes
   sudo: yes
 
 - name: setup pg_hba.conf
   template:
     src=pg_hba.conf.j2
-    dest=/var/lib/pgsql/9.3/data/pg_hba.conf
+    dest=/var/lib/pgsql/9.4/data/pg_hba.conf
     owner=postgres
   register: pg_hba
   sudo: yes
 
 - name: restart pgsql
-  service: name=postgresql-9.3 state=restarted
+  service: name=postgresql-9.4 state=restarted
   when: pg_hba|changed
   sudo: yes
