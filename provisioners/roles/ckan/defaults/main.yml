@@ -34,3 +34,6 @@ ckan_email_flush_interval: "0,30"
 
 # Plugin Settings
 ckan_plugins: stats text_preview recline_preview datastore
+
+# User Registration Settings (registration only allowed on local machines without LDAP)
+ckan_create_user_via_web: False
