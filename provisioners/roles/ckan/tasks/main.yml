@@ -45,10 +45,22 @@
     PATH: /usr/pgsql-9.4/bin:/usr/local/bin:/bin:/usr/bin
   sudo: yes
 
+- name: check whether plugin has already been cloned
+  stat: path="{{ckan_venv}}/src/{{item.egg_name|regex_replace('_', '-')}}/"
+  register: check_plugin_path
+  with_items: ckan_custom_plugins
+  when: ckan_custom_plugins is defined
+  sudo: yes
+
+- name: notification when skipping git clone
+  debug: msg="plugin folder exists so cloning will be skipped!!"
+  with_items: check_plugin_path.results
+  when: check_plugin_path.results is defined and item.stat.exists
+
 # TODO: Write a custom module that installs the custom plugins
 - name: pip install CKAN any custom plugins
   pip: 
-    name="git+{{item.url}}#egg={{item.egg_name}}"
+    name="git+{{item.0.url}}#egg={{item.0.egg_name}}"
     virtualenv="{{ckan_venv}}"
     virtualenv_site_packages=no
     extra_args="-e"
@@ -57,8 +69,10 @@
     # to ensure /usr/local/bin is in the path so that 
     # virtualenv is accessible.  
     PATH: /usr/local/bin:/bin:/usr/bin
-  with_items: ckan_custom_plugins
-  when: ckan_custom_plugins is defined
+  with_together:
+    - ckan_custom_plugins
+    - check_plugin_path.results
+  when: ckan_custom_plugins is defined and check_plugin_path.results is defined and item.1.stat.exists == false
   sudo: yes
 
 - name: check if custom plugin has requirements.txt file
