@@ -12,7 +12,7 @@
       shell: "echo check url is passed $ldap_server"
 #  python ckanext-cfpb-authtesting/ldap_auth.py
       environment:
-        ldap_server:{{ ckan_custom_plugins.config.ckanext.ldap.uri }}
-        ldap_user: {{ ckan_custom_plugins.config.ckanext.ldap.auth.dn }}
-        ldap_pass: {{ ckan_custom_plugins.config.ckanext.ldap.auth.password }}
+        ldap_server: "{{ ckan_custom_plugins.config.ckanext.ldap.uri }}"
+        ldap_user: "{{ ckan_custom_plugins.config.ckanext.ldap.auth.dn }}"
+        ldap_pass: "{{ ckan_custom_plugins.config.ckanext.ldap.auth.password }}"
       sudo: yes
