@@ -8,27 +8,15 @@
         name=python-ldap
       sudo: yes
 
-    
     - name: hit ldap with script
       shell: "echo check url is passed $ldap_server"
          # shell: "echo check url is passed $ldap_server"
          # python ckanext-cfpb-authtesting/ldap_auth.py
       environment:
-        # ldap_server: "{{ ckan_custom_plugins.config.ckanext.ldap.uri }}"
-        ldap_server: "{{ ckanext.ldap.uri }}"
-        ldap_user: "{{ ckan_custom_plugins.config.ckanext.ldap.auth.dn }}"
-        ldap_pass: "{{ ckan_custom_plugins.config.ckanext.ldap.auth.password }}"
-      sudo: yes
-    
-    - name: echo check url is passed {{ $ldap_server }}"
-      shell: "echo check url is passed {{ $ldap_server }}"
-         # shell: "echo check url is passed $ldap_server"
-         # python ckanext-cfpb-authtesting/ldap_auth.py
-      environment:
-        # ldap_server: "{{ ckan_custom_plugins.config.ckanext.ldap.uri }}"
-        # ldap_server: "{{ ckanext.ldap.uri }}"
-        ldap_server: ckanext.ldap.uri
-        ldap_user: "{{ ckan_custom_plugins.config.ckanext.ldap.auth.dn }}"
-        ldap_pass: "{{ ckan_custom_plugins.config.ckanext.ldap.auth.password }}"
+        # need to ensure that this is the ldap plugin and [1] is a bad way to do this
+        # ckanext.*.* is wrong... [1].config is a multi-line string!
+        ldap_server: "{{ ckan_custom_plugins[1].config.ckanext.ldap.uri }}" 
+        ldap_user: "{{ ckan_custom_plugins[1].config.ckanext.ldap.auth.dn }}"
+        ldap_user: "{{ ckan_custom_plugins[1].config.ckanext.ldap.auth.password }}"
       sudo: yes
     
