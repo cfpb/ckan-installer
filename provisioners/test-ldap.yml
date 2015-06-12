@@ -6,6 +6,7 @@
     - name: ldap
       pip:
         name=python-ldap
+      sudo: yes
     
     - name: hit ldap with script
       shell: echo "check url is passed $ldap_server" #python ckanext-cfpb-authtesting/ldap_auth.py
