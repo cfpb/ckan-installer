@@ -72,7 +72,7 @@
   with_together:
     - ckan_custom_plugins
     - check_plugin_path.results
-  when: ckan_custom_plugins is defined and check_plugin_path.results is defined and item.1.stat.exists == false
+  when: ckan_custom_plugins is defined and check_plugin_path.results is defined and (item.1.stat.exists == false or ckan_force_reinstall_plugins)
   sudo: yes
 
 - name: check if custom plugin has requirements.txt file

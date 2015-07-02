@@ -1,3 +1,4 @@
 ---
 # defaults file for ace
 ckanext_static_dir: "{{ckan_venv}}/src/ckanext-cfpb-extrafields/ckanext/cfpb_extrafields/public/"
+ace_force_reinstall: True
