@@ -13,6 +13,8 @@ solr_user: solr
 solr_user_password: $6$rounds=100000$IGDBTmZvVy2T1Edh$jNd.4ZnMV2woq.O9yDfneeJNDdQ..QDGLW897ymS9zQIiM7qiu40PeRPIioArDQCJOf1qDjV1yeWCjOeI/SFA/
 jetty_user: solr
 ckan_create_user_via_web: True 
+ckan_force_reinstall_plugins: False
+ace_force_reinstall: False
 ckan_custom_plugins:
   - name: ckanext_cfpb_extrafields
     egg_name: ckanext_cfpb_extrafields
