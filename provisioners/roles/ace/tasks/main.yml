@@ -7,7 +7,18 @@
 
 - name: git clone ACE to ckanext_static_dir (static-file folder)
   git: repo=https://github.com/ajaxorg/ace-builds.git
-       dest="{{ ckanext_static_dir }}/ace-builds/"
+       dest="{{ckanext_static_dir}}/ace-builds/"
        version=v1.1.9
        force=yes
+       sudo=yes
   when: not (acedir.stat.isdir is defined and acedir.stat.isdir) or ace_force_reinstall
+
+- name: ensure correct ownership for ACE directory
+  file:
+      path="{{ckanext_static_dir}}/ace-builds/"
+      state=directory
+      owner="{{ckan_user}}"
+      group="{{ckan_group}}"
+      recurse=true
+  notify: restart apache
+  sudo: yes
