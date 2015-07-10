@@ -23,9 +23,9 @@ solr_url: http://127.0.0.1:8983/solr
 
 # Email Settings
 ckan_email_to: ""
-ckan_error_email_from: ckan-noreply-error@localhost
-ckan_email_from: ckan-noreply@localhost
-ckan_smtp_server: localhost
+ckan_error_email_from: ckan-noreply-error@cfpb.gov
+ckan_email_from: ckan-noreply@cfpb.gov
+ckan_smtp_server: mailrelay.cfpb.local:25
 ckan_smtp_starttls: False
 ckan_smtp_user: ""
 ckan_smtp_password: ""
