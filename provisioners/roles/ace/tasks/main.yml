@@ -10,4 +10,5 @@
        dest="{{ ckanext_static_dir }}/ace-builds/"
        version=v1.1.9
        force=yes
+  sudo: yes
   when: not (acedir.stat.isdir is defined and acedir.stat.isdir) or ace_force_reinstall
