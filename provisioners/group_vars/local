@@ -1,7 +1,7 @@
 ---
 # Note: Try to minimize the number of group-specific variables
 
-ckan_github_host_url: github.com
+ckan_github_api_url: https://api.github.com/
 ckan_version_tag: ckan-2.3
 ckan_user: vagrant
 ckan_group: vagrant
