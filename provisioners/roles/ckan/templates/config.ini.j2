@@ -57,7 +57,9 @@ ckan.datastore.default_fts_index_method = gist
 
 ckan.site_url = {{ckan_site_url}}
 
-
+## GitHub Enterprise settings
+ckan.ckanext_cfpb_extrafields.github_api_url = {{ckan_github_api_url}}
+    
 ## Authorization Settings
 
 ckan.auth.anon_create_dataset = false
@@ -108,10 +110,10 @@ ckan.plugins = {{ckan_plugins}} {% for plugin in ckan_custom_plugins %}{{plugin.
 ckan.views.default_views = image_view text_view recline_view
 
 ## Front-End Settings
-ckan.site_title = CKAN
-ckan.site_logo = /base/images/ckan-logo.png
+ckan.site_title = Data Catalog
+ckan.site_logo =
 ckan.site_description =
-ckan.favicon = /images/icons/ckan.ico
+ckan.favicon = /favicon.ico
 ckan.gravatar_default = identicon
 ckan.preview.direct = png jpg gif
 ckan.preview.loadable = html htm rdf+xml owl+xml xml n3 n-triples turtle plain atom csv tsv rss txt json
