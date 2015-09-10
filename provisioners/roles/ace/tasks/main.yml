@@ -4,6 +4,7 @@
 - name: determine whether ace-builds already exists and dont replace
   stat: path="{{ ckanext_static_dir }}/ace-builds"
   register: acedir
+  sudo: yes
 
 - name: git clone ACE to ckanext_static_dir (static-file folder)
   git: repo=https://github.com/ajaxorg/ace-builds.git
