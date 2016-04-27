@@ -53,7 +53,7 @@
 - name: downloads setuptools
   get_url: 
     dest=/tmp/ez_setup.py
-    url=https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
+    url=https://bootstrap.pypa.io/ez_setup.py
   
 - name: installs setuptools
   command: /usr/local/bin/python2.7 ez_setup.py
