@@ -37,6 +37,8 @@ See the section on [Customizing Look and Feel](http://docs.ckan.org/en/latest/sy
 
 Check out the [Guide to Extending](http://docs.ckan.org/en/latest/extensions/tutorial.html) in the offical documentation
 
+If you are building with the extra fields, check out the [local developement guide](build-locally.md)
+
 ### Customizing this VM  
 If you make any changes to the `provisioners/group_vars/local` or any of the default variables, you will need to re-provision the VM.  Simply run `vagrant provision` and the changes will be applied.  
 
