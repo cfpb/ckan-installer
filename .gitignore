@@ -42,3 +42,7 @@ bower_components/
 ##########
 .vagrant
 vagrant_ansible_inventory_default
+
+# Ansible #
+###########
+*.retry
