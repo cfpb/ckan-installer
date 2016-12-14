@@ -46,9 +46,10 @@
   sudo: yes
 
 - name: check whether plugin has already been cloned
-  stat: path="{{ckan_venv}}/src/{{item.egg_name|regex_replace('_', '-')}}/"
+  stat:
+    path: "{{ckan_venv}}/src/{{item.egg_name|regex_replace('_', '-')}}/"
   register: check_plugin_path
-  with_items: ckan_custom_plugins
+  with_items: "{{ckan_custom_plugins}}"
   when: ckan_custom_plugins is defined
   sudo: yes
 
@@ -70,14 +71,14 @@
     # virtualenv is accessible.  
     PATH: /usr/local/bin:/bin:/usr/bin
   with_together:
-    - ckan_custom_plugins
-    - check_plugin_path.results
+    - "{{ckan_custom_plugins}}"
+    - "{{check_plugin_path.results}}"
   when: ckan_custom_plugins is defined and check_plugin_path.results is defined and (item.1.stat.exists == false or ckan_force_reinstall_plugins)
   sudo: yes
 
 - name: check if custom plugin has requirements.txt file
   stat: path="{{ckan_venv}}/src/{{item.egg_name|regex_replace('_', '-')}}/requirements.txt"
-  with_items: ckan_custom_plugins
+  with_items: "{{ckan_custom_plugins}}"
   when: ckan_custom_plugins is defined
   register: plugins_requirements
   sudo: yes
@@ -86,7 +87,7 @@
   pip:
     requirements="{{ckan_venv}}/src/{{item.item.egg_name|regex_replace('_', '-')}}/requirements.txt"
     virtualenv="{{ckan_venv}}"
-  with_items: plugins_requirements.results
+  with_items: "{{plugins_requirements.results}}"
   when: item.stat.exists
   sudo: yes
 
