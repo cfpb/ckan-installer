@@ -5,8 +5,14 @@
     dest=/etc/yum.repos.d/CentOS-Base.repo
   sudo: yes
 
+- name: install cert utilities
+  yum: 
+    name: ca-certificates
+    state: latest
+  sudo: yes
+
 - name: ensure PGDG Yum repo is installed
-  shell: rpm -Uvh http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-centos94-9.4-1.noarch.rpm 
+  shell: rpm -Uvh http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-centos94-9.4-3.noarch.rpm 
     creates=/etc/yum.repos.d/pgdg-94-centos.repo
   sudo: yes
 
