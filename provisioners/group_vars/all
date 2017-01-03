@@ -4,3 +4,8 @@ ckan_venv: "{{ckan_install_dir}}/default"
 ckan_db_name: ckan
 ckan_datastore_db_name: ckan_datastore
 ckan_config_dir: /ckan/config/default
+apache_modules:
+  - name: log_config_module
+    path: "/usr/lib64/httpd/modules/mod_log_config.so"
+  - name: wsgi_module
+    path: "{{ckan_venv}}/lib/python2.7/site-packages/mod_wsgi/server/mod_wsgi-py27.so"

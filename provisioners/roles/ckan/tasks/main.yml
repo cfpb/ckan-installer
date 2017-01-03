@@ -8,9 +8,8 @@
     - postgresql-devel
     - postgresql-libs
     - libselinux-python
-    # needed if installing ldap-based authentication
-    - python-ldap
-  sudo: yes
+  become: yes
+  when: "{{use_sudo}}"
 
 - name: create CKAN directory
   file:
@@ -20,30 +19,51 @@
     group="{{ckan_group}}"
     mode=0755
     recurse=yes
-  sudo: yes
+  become: "{{use_sudo}}"
 
+- name: create apache server root
+  file:
+    path="{{apache_server_root}}"
+    state=directory
+    owner="{{ckan_user}}"
+    group="{{ckan_group}}"
+    mode=0755
+    recurse=yes
+  become: "{{use_sudo}}"
+
+- name: create apache wsgi socket dir
+  file:
+    path="{{apache_server_root}}/sockets"
+    state=directory
+    owner="{{ckan_user}}"
+    group="{{ckan_group}}"
+    mode=0755
+    recurse=yes
+  become: "{{use_sudo}}"
+
+#Make the ckan venv
+- name: make the virtual environment
+  shell: "/usr/local/bin/virtualenv $(basename {{ckan_venv}})"
+  args:
+    creates: "{{ckan_venv}}"
+    chdir: "{{ckan_venv}}/.."
+
+#This version of python throws SNIMissingWarning unless an SNI extension to TLS is available
+- name: pip install ssl extensions
+  shell: "source {{ckan_venv}}/bin/activate && python -m pip install requests[security]"
+
+- name: pip install python-ldap
+  shell: "source {{ckan_venv}}/bin/activate && python -m pip install python-ldap"
+
+- name: pip install mod_wsgi
+  shell: "source {{ckan_venv}}/bin/activate && python -m pip install mod_wsgi"
+
+#Need to use python -m pip because when installing on mesos, you can't run pip directly due to the #! line being too long
 - name: pip install CKAN
-  pip: 
-    name="git+https://github.com/ckan/ckan.git@{{ckan_version_tag}}#egg=ckan"
-    virtualenv="{{ckan_venv}}"
-    virtualenv_site_packages=no
-    extra_args="-e"
-  environment: 
-    # Depending on the user running this command, we need
-    # to ensure /usr/local/bin is in the path so that 
-    # virtualenv is accessible.  
-    PATH: /usr/local/bin:/bin:/usr/bin
-  sudo: yes
+  shell: "source {{ckan_venv}}/bin/activate && python -m pip install -e git+https://github.com/ckan/ckan.git@{{ckan_version_tag}}#egg=ckan"
 
 - name: pip install CKAN requirements
-  pip:
-    requirements="{{ckan_venv}}/src/ckan/requirements.txt"
-    virtualenv="{{ckan_venv}}"
-  environment: 
-    # This is a bit of a hack so that we don't have to spend
-    # time gathering facts. We could just use anisble_env.PATH
-    PATH: /usr/pgsql-9.4/bin:/usr/local/bin:/bin:/usr/bin
-  sudo: yes
+  shell: "source {{ckan_venv}}/bin/activate && PATH=\"/usr/pgsql-9.4/bin:/usr/pgsql-9.5/bin:$PATH\" python -m pip install -r {{ckan_venv}}/src/ckan/requirements.txt"
 
 - name: check whether plugin has already been cloned
   stat:
@@ -51,7 +71,6 @@
   register: check_plugin_path
   with_items: "{{ckan_custom_plugins}}"
   when: ckan_custom_plugins is defined
-  sudo: yes
 
 - name: notification when skipping git clone
   debug: msg="plugin folder exists so cloning will be skipped!!"
@@ -60,36 +79,22 @@
 
 # TODO: Write a custom module that installs the custom plugins
 - name: pip install CKAN any custom plugins
-  pip: 
-    name="git+{{item.0.url}}#egg={{item.0.egg_name}}"
-    virtualenv="{{ckan_venv}}"
-    virtualenv_site_packages=no
-    extra_args="-e"
-  environment: 
-    # Depending on the user running this command, we need
-    # to ensure /usr/local/bin is in the path so that 
-    # virtualenv is accessible.  
-    PATH: /usr/local/bin:/bin:/usr/bin
+  shell: "source {{ckan_venv}}/bin/activate && python -m pip install -e git+{{item.0.url}}#egg={{item.0.egg_name}}"
   with_together:
     - "{{ckan_custom_plugins}}"
     - "{{check_plugin_path.results}}"
   when: ckan_custom_plugins is defined and check_plugin_path.results is defined and (item.1.stat.exists == false or ckan_force_reinstall_plugins)
-  sudo: yes
 
 - name: check if custom plugin has requirements.txt file
   stat: path="{{ckan_venv}}/src/{{item.egg_name|regex_replace('_', '-')}}/requirements.txt"
   with_items: "{{ckan_custom_plugins}}"
   when: ckan_custom_plugins is defined
   register: plugins_requirements
-  sudo: yes
 
 - name: pip install the requirements of custom plugins
-  pip:
-    requirements="{{ckan_venv}}/src/{{item.item.egg_name|regex_replace('_', '-')}}/requirements.txt"
-    virtualenv="{{ckan_venv}}"
+  shell: "source {{ckan_venv}}/bin/activate && python -m pip install -r {{ckan_venv}}/src/{{item.item.egg_name|regex_replace('_', '-')}}/requirements.txt"
   with_items: "{{plugins_requirements.results}}"
   when: item.stat.exists
-  sudo: yes
 
 - name: create CKAN config directory
   file:
@@ -97,7 +102,6 @@
     state=directory
     owner="{{ckan_user}}"
     group="{{ckan_group}}"
-  sudo: yes
 
 - name: create CKAN uploads directory
   file:
@@ -105,7 +109,6 @@
     state=directory
     owner="{{ckan_user}}"
     group="{{ckan_group}}"
-  sudo: yes
 
 - name: create CKAN log directory
   file:
@@ -113,27 +116,26 @@
     state=directory
     owner="{{ckan_user}}"
     group="{{ckan_group}}"
-  sudo: yes
+  become: "{{use_sudo}}"
 
 - name: create CKAN config file
   template: 
     src="config.ini.j2"
     dest="{{ckan_config_dir}}/config.ini"
-  notify: restart apache
-  sudo: yes
+  notify: restart ckan apache
 
 - name: set read-only ckan user
-  shell: source {{ckan_venv}}/bin/activate && paster --plugin=ckan datastore set-permissions -c {{ckan_config_dir}}/config.ini | sudo -u postgres psql --set ON_ERROR_STOP=1
+  shell: source {{ckan_venv}}/bin/activate && python {{ckan_venv}}/bin/paster --plugin=ckan datastore set-permissions -c {{ckan_config_dir}}/config.ini | sudo -u postgres psql --set ON_ERROR_STOP=1
     chdir="{{ckan_venv}}/src/ckan"
-  when: groups.has_key('local') and inventory_hostname in groups.local
+  when: use_sudo and groups.has_key('local') and inventory_hostname in groups.local
   #when: create_datastore_db|changed or create_datastore_db_user|changed or create_ckan_db|changed or create_ckan_db_user|changed
   notify: restart postgres
-  sudo: yes
 
+#TODO disable when not use_sudo?
 - name: create CKAN tables in database
-  shell: source {{ckan_venv}}/bin/activate && paster db init -c {{ckan_config_dir}}/config.ini
+  shell: source {{ckan_venv}}/bin/activate && python {{ckan_venv}}/bin/paster db init -c {{ckan_config_dir}}/config.ini
     chdir="{{ckan_venv}}/src/ckan"
-  sudo: yes
+  #sudo: yes
   #sudo_user: postgres
   #when: create_datastore_db|changed or create_datastore_db_user|changed or create_ckan_db|changed or create_ckan_db_user|changed
   notify: restart postgres
@@ -143,22 +145,21 @@
     src={{ckan_venv}}/src/ckan/who.ini
     dest={{ckan_config_dir}}/who.ini
     state=link
-  sudo: yes
 
 - name: create CKAN wsgi file
   template: 
     src="apache.wsgi.j2"
     dest="{{ckan_config_dir}}/apache.wsgi"
     mode=0755
-  notify: restart apache
-  sudo: yes
+  notify: restart ckan apache
 
+#TODO also support uwsgi
 - name: create CKAN apache config file
   template:
     src="ckan.conf.j2"
-    dest="/etc/httpd/conf.d/ckan.conf"
-  sudo: yes
-  notify: restart apache
+    dest="{{apache_config_dir}}"
+  become: "{{use_sudo}}"
+  notify: restart ckan apache
 
 - name: ensure correct ownership for all ckan directories
   file:
@@ -171,12 +172,13 @@
     - "{{ckan_install_dir}}"
     - "{{ckan_config_dir}}"
     - "{{ckan_log_dir}}"
-  notify: restart apache
-  sudo: yes
+  notify: restart ckan apache
 
+#I think this was a feature started on that was never completed. For now, only enable it in dev environment
 - name: create crontab for sending activity stream emails
   cron: name="ckan_send_emails"
         minute={{ckan_email_flush_interval}}
-        job="echo $(date) >> {{ckan_log_dir}}/email_flush.log && echo '{}' | {{ckan_venv}}/bin/paster post -c {{ckan_config_dir}}/config.ini /api/action/send_email_notifications >> {{ckan_log_dir}}/email_flush.log && echo '' >> {{ckan_log_dir}}/email_flush.log"
+        job="echo $(date) >> {{ckan_log_dir}}/email_flush.log && echo '{}' | {{ckan_venv}}/bin/python {{ckan_venv}}/bin/paster post -c {{ckan_config_dir}}/config.ini /api/action/send_email_notifications >> {{ckan_log_dir}}/email_flush.log && echo '' >> {{ckan_log_dir}}/email_flush.log"
         user=root
-  sudo: yes
+  become: yes
+  when: "{{use_sudo}}"

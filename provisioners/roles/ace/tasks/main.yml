@@ -4,14 +4,12 @@
 - name: determine whether ace-builds already exists and dont replace
   stat: path="{{ ckanext_static_dir }}/ace-builds"
   register: acedir
-  sudo: yes
 
 - name: git clone ACE to ckanext_static_dir (static-file folder)
   git: repo=https://github.com/ajaxorg/ace-builds.git
        dest="{{ckanext_static_dir}}/ace-builds/"
        version=v1.1.9
        force=yes
-  sudo: yes
   when: not (acedir.stat.isdir is defined and acedir.stat.isdir) or ace_force_reinstall
 
 - name: ensure correct ownership for ACE directory
@@ -21,5 +19,6 @@
       owner="{{ckan_user}}"
       group="{{ckan_group}}"
       recurse=true
-  notify: restart apache
-  sudo: yes
+  notify: restart ckan apache
+  become: yes
+  when: "{{use_sudo}}"

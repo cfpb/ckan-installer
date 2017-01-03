@@ -1,0 +1,45 @@
+---
+# Note: Try to minimize the number of group-specific variables
+
+use_sudo: no
+#TODO add apache module to local/all group_vars
+ace_force_reinstall: False
+
+apache_as_service: False
+apache_config_dir: "{{lookup('env', 'MESOS_SANDBOX')}}/apache_ckan.conf"
+apache_server_root: "{{lookup('env', 'MESOS_SANDBOX')}}/httpd"
+apache_port: 8888
+apache_run_wsgi_daemon: False
+apache_modules:
+  - name: log_config_module
+    path: "/usr/lib64/httpd/modules/mod_log_config.so"
+  - name: wsgi_module
+    path: "{{ckan_venv}}/lib/python2.7/site-packages/mod_wsgi/server/mod_wsgi-py27.so"
+
+ckan_create_user_via_web: True 
+ckan_datastore_db_name: "{{lookup('env', 'CKAN_DATASTORE_DB_NAME')}}"
+ckan_datastore_db_password: "{{lookup('env', 'CKAN_DATASTORE_DB_PASSWORD')}}"
+ckan_datastore_db_user: "{{lookup('env', 'CKAN_DATASTORE_DB_USER')}}"
+ckan_db_name: "{{lookup('env', 'CKAN_DB_NAME')}}"
+ckan_db_password: "{{lookup('env', 'CKAN_DB_PASSWORD')}}"
+ckan_db_user: "{{lookup('env', 'CKAN_DB_USER')}}"
+ckan_file_storage_dir: "/home/dtwork/ckan/uploads"
+ckan_force_reinstall_plugins: False
+ckan_github_api_url: https://api.github.com/
+ckan_group: mesagent
+ckan_install_dir: "{{lookup('env', 'MESOS_SANDBOX')}}/ckan"
+ckan_log_dir: "{{ckan_install_dir}}/logs"
+ckan_config_dir: "{{ckan_install_dir}}/config/default"
+ckan_user: mesagent
+ckan_venv: "{{ckan_install_dir}}/default"
+ckan_version_tag: ckan-2.3
+
+postgres_login_host: "{{lookup('env', 'CKAN_POSTGRES_HOST')}}"
+postgres_port: "{{lookup('env', 'CKAN_POSTGRES_PORT')}}"
+
+solr_url: "{{lookup('env', 'CKAN_SOLR_URL')}}"
+
+ckan_custom_plugins:
+  - name: ckanext_cfpb_extrafields #ckanext_cfpb_export ckanext_cfpb_import
+    egg_name: ckanext_cfpb_extrafields
+    url: https://github.com/cfpb/ckanext-cfpb-extrafields
