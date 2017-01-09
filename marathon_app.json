@@ -1,0 +1,49 @@
+{
+  "id": "/dc-test",
+  "cmd": "env; cd ckan-installer-mesos/provisioners && ANSIBLE_CONFIG=ansible-mesos.cfg ansible-playbook -vvvv provision-mesos.yml ; httpd -DFOREGROUND -f \"$MESOS_SANDBOX/apache_ckan.conf\"; sleep 600",
+  "cpus": 1,
+  "mem": 100,
+  "disk": 800,
+  "instances": 1,
+  "env": {
+    "CKAN_DATASTORE_DB_USER": "datastore_default",
+    "CKAN_SOLR_URL": "http://10.0.2.2:8983/solr",
+    "CKAN_DATASTORE_DB_NAME": "ckan_datastore",
+    "CKAN_DB_USER": "ckan_default",
+    "CKAN_POSTGRES_HOST": "10.0.2.2",
+    "CKAN_DATASTORE_DB_PASSWORD": "your-super-secure-ckan-password!23",
+    "CKAN_DB_PASSWORD": "your-super-secure-ckan-password!23",
+    "CKAN_POSTGRES_PORT": "5432",
+    "CKAN_DB_NAME": "ckan"
+  },
+  "healthChecks": [
+    {
+      "path": ":8888/",
+      "protocol": "HTTP",
+      "portIndex": 0,
+      "gracePeriodSeconds": 3000,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3,
+      "ignoreHttp1xx": false
+    }
+  ],
+  "portDefinitions": [
+    {
+      "port": 10000,
+      "protocol": "tcp",
+      "labels": {}
+    }
+  ],
+  "uris": [
+    "https://github.com/mattboehm/ckan-installer/archive/mesos.tar.gz"
+  ],
+  "fetch": [
+    {
+      "uri": "https://github.com/mattboehm/ckan-installer/archive/mesos.tar.gz",
+      "extract": true,
+      "executable": false,
+      "cache": false
+    }
+  ]
+}
