@@ -172,6 +172,7 @@
     - "{{ckan_install_dir}}"
     - "{{ckan_config_dir}}"
     - "{{ckan_log_dir}}"
+  become: "{{use_sudo}}"
   notify: restart ckan apache
 
 #I think this was a feature started on that was never completed. For now, only enable it in dev environment
