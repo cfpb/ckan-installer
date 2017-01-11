@@ -34,8 +34,8 @@ Since each Aurora app consists of a single ephemeral foreground process, this te
 1. `cd` into this repo and run `vagrant up`
 2. Create SSH tunnels to the PostgreSQL/Solr instances: `vagrant ssh -- -L 8983:localhost:8983 -L 5432:localhost:5432`
 3. From the aurora repo, open an ssh tunnel to marathon: `vagrant ssh mesos_master_1 -- -L 8000:localhost:8080`
-4. Within the ssh tunnel, find your gateway IP by running `netstat -nr | grep default`
-5. Visit [localhost:8080](http://localhost:8080) to access the marathon UI and make a new app
+4. Within the ssh tunnel, find your gateway IP by running `netstat -nr`
+5. Visit [localhost:8000](http://localhost:8000) to access the marathon UI and make a new app
 6. Edit the app's config, click the "json" toggle in the upper right, and paste the json from `marathon_app.json` (located in the same directory as this readme). Update any instances of `10.0.2.2` with the gateway IP you noted in step 4.
 7. Upon saving the config, you'll be prompted to (re)deploy the application. Do so and give it time to install (~10 minutes?)
 8. Download the stdout/stderr files in marathon and briefly scan them for errors

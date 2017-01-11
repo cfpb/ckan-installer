@@ -35,9 +35,6 @@
       "labels": {}
     }
   ],
-  "uris": [
-    "https://github.com/mattboehm/ckan-installer/archive/mesos.tar.gz"
-  ],
   "fetch": [
     {
       "uri": "https://github.com/mattboehm/ckan-installer/archive/mesos.tar.gz",
