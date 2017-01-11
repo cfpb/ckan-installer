@@ -23,7 +23,7 @@ ckan_datastore_db_user: "{{lookup('env', 'CKAN_DATASTORE_DB_USER')}}"
 ckan_db_name: "{{lookup('env', 'CKAN_DB_NAME')}}"
 ckan_db_password: "{{lookup('env', 'CKAN_DB_PASSWORD')}}"
 ckan_db_user: "{{lookup('env', 'CKAN_DB_USER')}}"
-ckan_file_storage_dir: "/home/dtwork/ckan/uploads"
+ckan_file_storage_dir: "/home/work/ckan/uploads"
 ckan_force_reinstall_plugins: False
 ckan_github_api_url: https://api.github.com/
 ckan_group: mesagent
