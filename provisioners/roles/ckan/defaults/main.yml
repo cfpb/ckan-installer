@@ -9,7 +9,7 @@ ckan_server_alias: localhost
 ckan_file_storage_dir: "{{ckan_venv}}/uploads"
 ckan_log_dir: /var/log/ckan
 ckan_site_id: ckan
-ckan_site_url: ""
+ckan_site_url: "http://localhost:8080"
 
 # postgres settings
 postgres_login_host: localhost
