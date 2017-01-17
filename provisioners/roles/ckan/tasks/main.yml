@@ -31,6 +31,16 @@
     recurse=yes
   become: "{{use_sudo}}"
 
+- name: create apache run dir
+  file:
+    path="{{apache_server_root}}/run"
+    state=directory
+    owner="{{ckan_user}}"
+    group="{{ckan_group}}"
+    mode=0755
+    recurse=yes
+  become: "{{use_sudo}}"
+
 - name: create apache wsgi socket dir
   file:
     path="{{apache_server_root}}/sockets"
