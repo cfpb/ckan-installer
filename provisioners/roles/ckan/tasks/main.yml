@@ -112,6 +112,7 @@
     state=directory
     owner="{{ckan_user}}"
     group="{{ckan_group}}"
+    recurse=yes
 
 - name: create CKAN uploads directory
   file:
@@ -119,6 +120,7 @@
     state=directory
     owner="{{ckan_user}}"
     group="{{ckan_group}}"
+    recurse=yes
 
 - name: create CKAN log directory
   file:
@@ -126,6 +128,7 @@
     state=directory
     owner="{{ckan_user}}"
     group="{{ckan_group}}"
+    recurse=yes
   become: "{{use_sudo}}"
 
 - name: create CKAN config file
