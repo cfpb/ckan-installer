@@ -31,17 +31,15 @@ To stop the vagrant box: `vagrant halt`
 If you would like to install ckan onto a locally running instance of [Aurora](https://github.com/cfpb/aurora), follow the steps below.
 Since each Aurora app consists of a single ephemeral foreground process, this technique relies on installing CKAN the traditional way first and using its instance of PostgreSQL/Solr with an Apache process running on Mesos via Marathon.
 
-1. `cd` into this repo and run `vagrant up`
+1. `cd` into the `provisioners/` folder in this repo and run `vagrant up`
 2. Create SSH tunnels to the PostgreSQL/Solr instances: `vagrant ssh -- -L 8983:localhost:8983 -L 5432:localhost:5432`
-3. From the aurora repo, open an ssh tunnel to marathon: `vagrant ssh mesos_master_1 -- -L 8000:localhost:8080`
-4. Within the ssh tunnel, find your gateway IP by running `netstat -nr`
-5. Visit [localhost:8000](http://localhost:8000) to access the marathon UI and make a new app
-6. Edit the app's config, click the "json" toggle in the upper right, and paste the json from `marathon_app.json` (located in the same directory as this readme). Update any instances of `10.0.2.2` with the gateway IP you noted in step 4.
-7. Upon saving the config, you'll be prompted to (re)deploy the application. Do so and give it time to install (~10 minutes?)
-8. Download the stdout/stderr files in marathon and briefly scan them for errors
-9. Within those stdout/stderr, note the long directory that everything is being put into (`MESOS_SANDBOX`). Try `vagrant ssh mesos_agent_1 -- -L 8888:localhost:8888` and within that machine `ls <path/to/sandbox>`. If the file does not exist, kill the ssh and retry with `mesos_agent_2` and `mesos_agent_3` until you've found the agent that is running the application.
-10. Try visiting [localhost:8888](http://localhost:8888) and ensure that you can see the Data Catalog page.
-11. If you encounter an apache error page, go to your ssh session with the mesos agent and look for details in the logs at `/path/to/sandbox/httpd`
+3. Visit [10.0.1.31:8080](http://10.0.1.31:8080) to access the marathon UI and make a new app
+4. Edit the app's config, click the "json" toggle in the upper right, and paste the json from `marathon_app.json` (located in the same directory as this readme).
+5. Upon saving the config, you'll be prompted to (re)deploy the application. Do so and give it time to install (~10 minutes?)
+6. Open the Mesos UI at [10.0.1.31:5000](http://10.0.1.31:5000). Locate your job under the "Active Tasks" section and click its "Sandbox" link.
+7. Click the "stdout" link and confirm that the bottom says `PLAY RECAP` and that you see `failed=0`. If there is no play recap yet, you probably need to wait for ansible to finish running
+8. Go back to the [Marathon UI](http://10.0.1.31:8080) and locate your task. Click the link undereath the ID (something like '10.0.1.34:31029').
+9. This should open the Data Catalog in a new tab. If you receive an error page, go back to the sandbox and check `stdout`, `stderr` and `httpd/apache.error.log` for error messages.
 
 ## Getting Started
 For information about how to use CKAN, please see the [official documentation](http://docs.ckan.org/en/latest/user-guide.html)

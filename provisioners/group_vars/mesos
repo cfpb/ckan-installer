@@ -8,7 +8,7 @@ ace_force_reinstall: False
 apache_as_service: False
 apache_config_dir: "{{lookup('env', 'MESOS_SANDBOX')}}/apache_ckan.conf"
 apache_server_root: "{{lookup('env', 'MESOS_SANDBOX')}}/httpd"
-apache_port: 8888
+apache_port: "{{lookup('env', 'PORT0')}}"
 apache_run_wsgi_daemon: False
 apache_modules:
   - name: log_config_module

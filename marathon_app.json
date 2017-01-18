@@ -1,11 +1,12 @@
 {
   "id": "/dc-test",
-  "cmd": "env; cd ckan-installer-mesos/provisioners && ANSIBLE_CONFIG=ansible-mesos.cfg ansible-playbook -vvvv provision-mesos.yml ; httpd -DFOREGROUND -f \"$MESOS_SANDBOX/apache_ckan.conf\"; sleep 600",
-  "cpus": 1,
-  "mem": 100,
-  "disk": 800,
+  "cmd": "env; cd ckan-installer-mesos/provisioners && ansible-playbook -vvvv provision-mesos.yml ; httpd -DFOREGROUND -f \"$MESOS_SANDBOX/apache_ckan.conf\"; sleep 600",
+  "cpus": 0.5,
+  "mem": 128,
+  "disk": 0,
   "instances": 1,
   "env": {
+    "ANSIBLE_CONFIG": "ansible-mesos.cfg",
     "CKAN_DATASTORE_DB_USER": "datastore_default",
     "CKAN_SOLR_URL": "http://10.0.2.2:8983/solr",
     "CKAN_DATASTORE_DB_NAME": "ckan_datastore",
@@ -18,13 +19,13 @@
   },
   "healthChecks": [
     {
-      "path": ":8888/",
+      "path": "/",
       "protocol": "HTTP",
       "portIndex": 0,
-      "gracePeriodSeconds": 3000,
-      "intervalSeconds": 60,
-      "timeoutSeconds": 20,
-      "maxConsecutiveFailures": 3,
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 30,
+      "timeoutSeconds": 15,
+      "maxConsecutiveFailures": 40,
       "ignoreHttp1xx": false
     }
   ],
