@@ -47,6 +47,22 @@ For information about how to use CKAN, please see the [official documentation](h
 **Customizing Look and Feel**  
 See the section on [Customizing Look and Feel](http://docs.ckan.org/en/latest/sysadmin-guide.html#customizing-look-and-feel) in the official documentation
 
+## Useful commands
+The ckan docs contain several commands that are useful for administering the ckan instance. Some of them are listed here for convenience:
+
+Make a user an admin:
+
+    source /ckan/default/bin/activate && cd /ckan/default/src/ckan && paster sysadmin add <username> -c /ckan/config/default/config.ini
+
+Re-index solr  (required after upgrade)
+
+    source /ckan/default/bin/activate && cd /ckan/default/src/ckan && paster search-index rebuild -r --config=/ckan/config/default/config.ini
+
+## Upgrading CKAN
+If you want to upgrade the version of ckan, follow the instructions in the [CKAN Docs](http://docs.ckan.org/en/latest/maintaining/upgrading/upgrade-source.html).
+
+Note that you must upgrade one minor version at a time (you can't go straight from 2.3 to 2.5, but instead must do `2.3 -> 2.4 -> 2.5`).
+
 ## Developers
 
 Check out the [Guide to Extending](http://docs.ckan.org/en/latest/extensions/tutorial.html) in the offical documentation
