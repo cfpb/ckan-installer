@@ -25,14 +25,20 @@ ckan_db_password: "{{lookup('env', 'CKAN_DB_PASSWORD')}}"
 ckan_db_user: "{{lookup('env', 'CKAN_DB_USER')}}"
 ckan_file_storage_dir: "/home/work/ckan/uploads"
 ckan_force_reinstall_plugins: False
-ckan_github_api_url: https://api.github.com/
+ckan_github_api_url: "{{lookup('env', 'CKAN_GITHUB_API')|default('https://api.github.com/', true)}}"
 ckan_group: mesagent
 ckan_install_dir: "{{lookup('env', 'MESOS_SANDBOX')}}/ckan"
 ckan_log_dir: "{{ckan_install_dir}}/logs"
 ckan_config_dir: "{{ckan_install_dir}}/config/default"
+ckan_site_url: "{{lookup('env', 'CKAN_SITE_URL')}}/ckan"
 ckan_user: mesagent
 ckan_venv: "{{ckan_install_dir}}/default"
 ckan_version_tag: ckan-2.3
+
+ckan_ldap_uri: "{{lookup('env', 'CKAN_LDAP_URI')}}"
+ckan_ldap_base_dn: "{{lookup('env', 'CKAN_LDAP_BASE_DN')}}"
+ckan_ldap_auth_dn: "{{lookup('env', 'CKAN_LDAP_AUTH_DN')}}"
+ckan_ldap_auth_password: "{{lookup('env', 'CKAN_LDAP_AUTH_PASSWORD')}}"
 
 postgres_login_host: "{{lookup('env', 'CKAN_POSTGRES_HOST')}}"
 postgres_port: "{{lookup('env', 'CKAN_POSTGRES_PORT')}}"

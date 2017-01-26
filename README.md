@@ -36,7 +36,7 @@ Since each Aurora app consists of a single ephemeral foreground process, this te
 3. Visit [10.0.1.31:8080](http://10.0.1.31:8080) to access the marathon UI and make a new app
 4. Edit the app's config, click the "json" toggle in the upper right, and paste the json from `marathon_app.json` (located in the same directory as this readme).
 5. Upon saving the config, you'll be prompted to (re)deploy the application. Do so and give it time to install (~10 minutes?)
-6. Open the Mesos UI at [10.0.1.31:5000](http://10.0.1.31:5000). Locate your job under the "Active Tasks" section and click its "Sandbox" link.
+6. Open the Mesos UI at [10.0.1.31:5050](http://10.0.1.31:5050). Locate your job under the "Active Tasks" section and click its "Sandbox" link.
 7. Click the "stdout" link and confirm that the bottom says `PLAY RECAP` and that you see `failed=0`. If there is no play recap yet, you probably need to wait for ansible to finish running
 8. Go back to the [Marathon UI](http://10.0.1.31:8080) and locate your task. Click the link undereath the ID (something like '10.0.1.34:31029').
 9. This should open the Data Catalog in a new tab. If you receive an error page, go back to the sandbox and check `stdout`, `stderr` and `httpd/apache.error.log` for error messages.
