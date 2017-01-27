@@ -9,7 +9,7 @@
     "ANSIBLE_CONFIG": "ansible-mesos.cfg",
     "CKAN_DATASTORE_DB_USER": "datastore_default",
     "CKAN_SOLR_URL": "http://10.0.2.2:8983/solr",
-    "CKAN_SITE_URL": "http://localhost:$PORT0",
+    "CKAN_SITE_URL": "http://$HOST:$PORT0",
     "CKAN_DATASTORE_DB_NAME": "ckan_datastore",
     "CKAN_DB_USER": "ckan_default",
     "CKAN_POSTGRES_HOST": "10.0.2.2",
