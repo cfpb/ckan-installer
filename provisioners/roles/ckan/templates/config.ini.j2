@@ -61,7 +61,7 @@ ckan.site_url = {{ckan_site_url}}
 ckan.ckanext_cfpb_extrafields.github_api_url = {{ckan_github_api_url}}
 
 ## LDAP Settings
-{% if ckan_ldap_uri %}
+{% if ckan_ldap_uri is defined %}
 ckanext.ldap.uri = {{ckan_ldap_uri}}
 ckanext.ldap.base_dn = {{ckan_ldap_base_dn}}
 ckanext.ldap.auth.dn = {{ckan_ldap_auth_dn}}
