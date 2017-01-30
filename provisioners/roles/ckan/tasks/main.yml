@@ -31,6 +31,11 @@
     recurse=yes
   become: "{{use_sudo}}"
 
+- name: check if apache run dir exists
+  stat:
+    path: "{{apache_server_root}}/run"
+  register: apache_run_dir_stat
+
 - name: create apache run dir
   file:
     path="{{apache_server_root}}/run"
@@ -39,6 +44,7 @@
     group="{{ckan_group}}"
     mode=0755
     recurse=yes
+  when: not apache_run_dir_stat.stat.exists
   become: "{{use_sudo}}"
 
 - name: create apache wsgi socket dir
