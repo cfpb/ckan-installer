@@ -43,10 +43,10 @@ who.log_file = %(cache_dir)s/who_log.ini
 
 
 ## Database Settings
-sqlalchemy.url = postgresql://{{ckan_db_user}}:{{ckan_db_password}}@{{postgres_login_host}}:{{postgres_port}}/{{ckan_db_name}}
+sqlalchemy.url = postgresql://{{ckan_db_user}}:{{ckan_db_password|urlencode}}@{{postgres_login_host}}:{{postgres_port}}/{{ckan_db_name}}
 
-ckan.datastore.write_url = postgresql://{{ckan_db_user}}:{{ckan_db_password}}@{{postgres_login_host}}:{{postgres_port}}/{{ckan_datastore_db_name}}
-ckan.datastore.read_url = postgresql://{{ckan_datastore_db_user}}:{{ckan_datastore_db_password}}@{{postgres_login_host}}:{{postgres_port}}/{{ckan_datastore_db_name}}
+ckan.datastore.write_url = postgresql://{{ckan_db_user}}:{{ckan_db_password|urlencode}}@{{postgres_login_host}}:{{postgres_port}}/{{ckan_datastore_db_name}}
+ckan.datastore.read_url = postgresql://{{ckan_datastore_db_user}}:{{ckan_datastore_db_password|urlencode}}@{{postgres_login_host}}:{{postgres_port}}/{{ckan_datastore_db_name}}
 
 # PostgreSQL' full-text search parameters
 ckan.datastore.default_fts_lang = english
