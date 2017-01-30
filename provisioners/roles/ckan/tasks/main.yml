@@ -124,9 +124,9 @@
   file:
     path="{{ckan_file_storage_dir}}"
     state=directory
-    #owner="{{ckan_user}}" #commented out for now as this breaks in staging due to multiple uids for mesagent user
-    #group="{{ckan_group}}"
     recurse=yes
+# owner="{{ckan_user}}" #commented out for now as this breaks in staging due to multiple uids for mesagent user
+# group="{{ckan_group}}"
 
 - name: create CKAN log directory
   file:
