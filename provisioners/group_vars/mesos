@@ -23,15 +23,15 @@ ckan_datastore_db_user: "{{lookup('env', 'CKAN_DATASTORE_DB_USER')}}"
 ckan_db_name: "{{lookup('env', 'CKAN_DB_NAME')}}"
 ckan_db_password: "{{lookup('env', 'CKAN_DB_PASSWORD')}}"
 ckan_db_user: "{{lookup('env', 'CKAN_DB_USER')}}"
-ckan_file_storage_dir: "{{lookup('env', 'CKAN_FILE_STORAGE_DIR')|default('/home/work/ckan/uploads')}}"
+ckan_file_storage_dir: "{{lookup('env', 'CKAN_FILE_STORAGE_DIR')|default('/home/work/ckan/uploads', true)}}"
 ckan_force_reinstall_plugins: False
 ckan_github_api_url: "{{lookup('env', 'CKAN_GITHUB_API')|default('https://api.github.com/', true)}}"
-ckan_group: "{{lookup('env', 'CKAN_GROUP')|default('mesagent')}}"
+ckan_group: "{{lookup('env', 'CKAN_GROUP')|default('mesagent', true)}}"
 ckan_install_dir: "{{lookup('env', 'MESOS_SANDBOX')}}/ckan"
 ckan_log_dir: "{{ckan_install_dir}}/logs"
 ckan_config_dir: "{{ckan_install_dir}}/config/default"
 ckan_site_url: "{{lookup('env', 'CKAN_SITE_URL')}}/ckan"
-ckan_user: "{{lookup('env', 'CKAN_USER')|default('mesagent')}}"
+ckan_user: "{{lookup('env', 'CKAN_USER')|default('mesagent', true)}}"
 ckan_venv: "{{ckan_install_dir}}/default"
 ckan_version_tag: ckan-2.3
 
