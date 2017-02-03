@@ -46,6 +46,6 @@ postgres_port: "{{lookup('env', 'CKAN_POSTGRES_PORT')}}"
 solr_url: "{{lookup('env', 'CKAN_SOLR_URL')}}"
 
 ckan_custom_plugins:
-  - name: ckanext_cfpb_extrafields #ckanext_cfpb_export ckanext_cfpb_import
+  - name: ckanext_cfpb_extrafields ckanext_cfpb_export ckanext_cfpb_sso
     egg_name: ckanext_cfpb_extrafields
     url: https://github.com/cfpb/ckanext-cfpb-extrafields
