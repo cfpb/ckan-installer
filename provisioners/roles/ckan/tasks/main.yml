@@ -120,11 +120,18 @@
     group="{{ckan_group}}"
     recurse=yes
 
+- name: check if CKAN uploads directory exists
+  stat:
+    path: "{{ckan_file_storage_dir}}"
+  register: ckan_upload_dir_stat
+
 - name: create CKAN uploads directory
   file:
     path="{{ckan_file_storage_dir}}"
     state=directory
     recurse=yes
+  when: not ckan_upload_dir_stat.stat.exists
+
 # owner="{{ckan_user}}" #commented out for now as this breaks in staging due to multiple uids for mesagent user
 # group="{{ckan_group}}"
 
