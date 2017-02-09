@@ -129,6 +129,8 @@
   file:
     path="{{ckan_file_storage_dir}}"
     state=directory
+    owner="{{ckan_user}}"
+    group="{{ckan_group}}"
     recurse=yes
   when: not ckan_upload_dir_stat.stat.exists
 
