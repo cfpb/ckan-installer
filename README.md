@@ -63,6 +63,8 @@ If you want to upgrade the version of ckan, follow the instructions in the [CKAN
 
 Note that you must upgrade one minor version at a time (you can't go straight from 2.3 to 2.5, but instead must do `2.3 -> 2.4 -> 2.5`).
 
+Furthermore, there is a bug in version 2.5.0, so the actual list of tags should be: `ckan-2.3` -> `ckan-2.4.0` -> `ckan-2.5.3` -> `ckan-2.6.0`.
+
 ## Developers
 
 Check out the [Guide to Extending](http://docs.ckan.org/en/latest/extensions/tutorial.html) in the offical documentation

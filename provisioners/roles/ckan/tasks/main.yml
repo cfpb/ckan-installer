@@ -159,7 +159,6 @@
   #when: create_datastore_db|changed or create_datastore_db_user|changed or create_ckan_db|changed or create_ckan_db_user|changed
   notify: restart postgres
 
-#TODO disable when not use_sudo?
 - name: create CKAN tables in database
   shell: source {{ckan_venv}}/bin/activate && python {{ckan_venv}}/bin/paster db init -c {{ckan_config_dir}}/config.ini
     chdir="{{ckan_venv}}/src/ckan"
@@ -167,6 +166,16 @@
   #sudo_user: postgres
   #when: create_datastore_db|changed or create_datastore_db_user|changed or create_ckan_db|changed or create_ckan_db_user|changed
   notify: restart postgres
+
+- name: upgrade CKAN tables in database
+  shell: source {{ckan_venv}}/bin/activate && python {{ckan_venv}}/bin/paster db upgrade -c {{ckan_config_dir}}/config.ini
+    chdir="{{ckan_venv}}/src/ckan"
+  notify: restart postgres
+
+- name: re-index solr instance
+  shell: source {{ckan_venv}}/bin/activate && python {{ckan_venv}}/bin/paster search-index rebuild -r --config={{ckan_config_dir}}/config.ini
+    chdir="{{ckan_venv}}/src/ckan"
+  when: "{{ckan_reindex_solr}}"
 
 - name: create symlink to who.ini
   file: 

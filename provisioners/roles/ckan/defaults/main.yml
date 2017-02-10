@@ -30,6 +30,7 @@ apache_server_root: "/etc/httpd"
 
 # solr settings
 solr_url: http://127.0.0.1:8983/solr
+ckan_reindex_solr: True
 
 # Email Settings
 ckan_email_to: ""

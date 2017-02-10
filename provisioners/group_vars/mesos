@@ -44,6 +44,7 @@ postgres_login_host: "{{lookup('env', 'CKAN_POSTGRES_HOST')}}"
 postgres_port: "{{lookup('env', 'CKAN_POSTGRES_PORT')}}"
 
 solr_url: "{{lookup('env', 'CKAN_SOLR_URL')}}"
+ckan_reindex_solr: "{{lookup('env', 'CKAN_REINDEX_SOLR')|default(True, true)}}"
 
 ckan_custom_plugins:
   - name: ckanext_cfpb_extrafields ckanext_cfpb_export ckanext_cfpb_sso
