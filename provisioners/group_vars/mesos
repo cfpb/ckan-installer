@@ -33,7 +33,7 @@ ckan_config_dir: "{{ckan_install_dir}}/config/default"
 ckan_site_url: "{{lookup('env', 'CKAN_SITE_URL')}}/ckan"
 ckan_user: "{{lookup('env', 'CKAN_USER')|default('mesagent', true)}}"
 ckan_venv: "{{ckan_install_dir}}/default"
-ckan_version_tag: ckan-2.3
+ckan_version_tag: "{{lookup('env', 'CKAN_VERSION_TAG')|default('ckan-2.3', true)}}"
 
 ckan_ldap_uri: "{{lookup('env', 'CKAN_LDAP_URI')}}"
 ckan_ldap_base_dn: "{{lookup('env', 'CKAN_LDAP_BASE_DN')}}"
