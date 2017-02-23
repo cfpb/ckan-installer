@@ -49,3 +49,5 @@ ckan_force_reinstall_plugins: True
 
 # User Registration Settings (registration only allowed on local machines without LDAP)
 ckan_create_user_via_web: False
+
+file_permissions: "u+rw,g+r,o+r"

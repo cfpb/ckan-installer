@@ -40,6 +40,8 @@ ckan_ldap_base_dn: "{{lookup('env', 'CKAN_LDAP_BASE_DN')}}"
 ckan_ldap_auth_dn: "{{lookup('env', 'CKAN_LDAP_AUTH_DN')}}"
 ckan_ldap_auth_password: "{{lookup('env', 'CKAN_LDAP_AUTH_PASSWORD')}}"
 
+file_permissions: "u+rw,g-w,o-rwx"
+
 postgres_login_host: "{{lookup('env', 'CKAN_POSTGRES_HOST')}}"
 postgres_port: "{{lookup('env', 'CKAN_POSTGRES_PORT')}}"
 
