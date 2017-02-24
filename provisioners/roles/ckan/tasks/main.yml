@@ -74,6 +74,9 @@
 - name: pip install mod_wsgi
   shell: "source {{ckan_venv}}/bin/activate && python -m pip install mod_wsgi"
 
+- name: pip install uwsgi
+  shell: "source {{ckan_venv}}/bin/activate && python -m pip install uwsgi"
+
 #Need to use python -m pip because when installing on mesos, you can't run pip directly due to the #! line being too long
 - name: pip install CKAN
   shell: "source {{ckan_venv}}/bin/activate && python -m pip install -e git+https://github.com/ckan/ckan.git@{{ckan_version_tag}}#egg=ckan"
