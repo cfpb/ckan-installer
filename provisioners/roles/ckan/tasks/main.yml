@@ -208,7 +208,7 @@
       owner="{{ckan_user}}"
       group="{{ckan_group}}"
       recurse=true
-      mode="{{file_permissions}}"
+      #mode="{{file_permissions}}"
   with_items:
     - "{{ckan_install_dir}}"
     - "{{ckan_config_dir}}"
