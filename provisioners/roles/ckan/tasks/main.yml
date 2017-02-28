@@ -77,12 +77,14 @@
 - name: pip install uwsgi
   shell: "source {{ckan_venv}}/bin/activate && python -m pip install uwsgi"
 
-#Need to use python -m pip because when installing on mesos, you can't run pip directly due to the #! line being too long
+# Need to use python -m pip because when installing on mesos, you can't run pip directly due to the #! line being too long
 - name: pip install CKAN
   shell: "source {{ckan_venv}}/bin/activate && python -m pip install -e git+https://github.com/ckan/ckan.git@{{ckan_version_tag}}#egg=ckan"
 
 - name: pip install CKAN requirements
-  shell: "source {{ckan_venv}}/bin/activate && PATH=\"/usr/pgsql-9.4/bin:/usr/pgsql-9.5/bin:$PATH\" python -m pip install -r {{ckan_venv}}/src/ckan/requirements.txt"
+  shell: "source {{ckan_venv}}/bin/activate && python -m pip install -r {{ckan_venv}}/src/ckan/requirements.txt"
+  environment:
+    PATH: /usr/pgsql-9.4/bin:/usr/pgsql-9.5/bin:{{ansible_env.PATH}}
 
 - name: check whether plugin has already been cloned
   stat:
@@ -165,9 +167,6 @@
 - name: create CKAN tables in database
   shell: source {{ckan_venv}}/bin/activate && python {{ckan_venv}}/bin/paster db init -c {{ckan_config_dir}}/config.ini
     chdir="{{ckan_venv}}/src/ckan"
-  #sudo: yes
-  #sudo_user: postgres
-  #when: create_datastore_db|changed or create_datastore_db_user|changed or create_ckan_db|changed or create_ckan_db_user|changed
   notify: restart postgres
 
 - name: upgrade CKAN tables in database
@@ -193,7 +192,6 @@
     mode=0755
   notify: restart ckan apache
 
-#TODO also support uwsgi
 - name: create CKAN apache config file
   template:
     src="ckan.conf.j2"
@@ -216,7 +214,7 @@
   become: "{{use_sudo}}"
   notify: restart ckan apache
 
-#I think this was a feature started on that was never completed. For now, only enable it in dev environment
+# I think this was a feature started on that was never completed. For now, only enable it in dev environment
 - name: create crontab for sending activity stream emails
   cron: name="ckan_send_emails"
         minute={{ckan_email_flush_interval}}

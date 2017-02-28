@@ -1,8 +1,8 @@
 {
   "id": "/dc-test",
-  "cmd": "env; cd ckan-installer-mesos/provisioners && ansible-playbook -vvvv provision-mesos.yml ; httpd -DFOREGROUND -f \"$MESOS_SANDBOX/apache_ckan.conf\"; sleep 600",
-  "cpus": 0.5,
-  "mem": 128,
+  "cmd": "env; cd ckan-installer-master/provisioners && ansible-playbook -vvvv provision-mesos.yml ; source \"$MESOS_SANDBOX/ckan/default/bin/activate\"; uwsgi --http :$PORT0 --threads 8 --buffer-size 65535 --wsgi-file \"$MESOS_SANDBOX/ckan/config/default/apache.wsgi\"",
+  "cpus": 1,
+  "mem": 512,
   "disk": 0,
   "instances": 1,
   "env": {
@@ -16,7 +16,9 @@
     "CKAN_DATASTORE_DB_PASSWORD": "your-super-secure-ckan-password!23",
     "CKAN_DB_PASSWORD": "your-super-secure-ckan-password!23",
     "CKAN_POSTGRES_PORT": "5432",
-    "CKAN_DB_NAME": "ckan"
+    "CKAN_DB_NAME": "ckan",
+    "CKAN_REINDEX_SOLR": "True",
+    "CKAN_VERSION_TAG": "ckan-2.3"
   },
   "healthChecks": [
     {
@@ -37,12 +39,7 @@
       "labels": {}
     }
   ],
-  "fetch": [
-    {
-      "uri": "https://github.com/mattboehm/ckan-installer/archive/mesos.tar.gz",
-      "extract": true,
-      "executable": false,
-      "cache": false
-    }
+  "uris": [
+    "https://github.com/cfpb/ckan-installer/archive/master.tar.gz"
   ]
 }
