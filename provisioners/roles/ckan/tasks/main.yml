@@ -82,9 +82,7 @@
   shell: "source {{ckan_venv}}/bin/activate && python -m pip install -e git+https://github.com/ckan/ckan.git@{{ckan_version_tag}}#egg=ckan"
 
 - name: pip install CKAN requirements
-  shell: "source {{ckan_venv}}/bin/activate && python -m pip install -r {{ckan_venv}}/src/ckan/requirements.txt"
-  environment:
-    PATH: /usr/pgsql-9.4/bin:/usr/pgsql-9.5/bin:{{ansible_env.PATH}}
+  shell: "source {{ckan_venv}}/bin/activate && PATH=\"/usr/pgsql-9.4/bin:/usr/pgsql-9.5/bin:$PATH\" python -m pip install -r {{ckan_venv}}/src/ckan/requirements.txt"
 
 - name: check whether plugin has already been cloned
   stat:
