@@ -51,4 +51,4 @@ ckan_reindex_solr: "{{lookup('env', 'CKAN_REINDEX_SOLR')|default(True, true)}}"
 ckan_custom_plugins:
   - name: ckanext_cfpb_extrafields ckanext_cfpb_export ckanext_cfpb_import ckanext_cfpb_sso
     egg_name: ckanext_cfpb_extrafields
-    url: https://github.com/cfpb/ckanext-cfpb-extrafields
+    url: "{{lookup('env', 'CKAN_CFPB_PLUGIN_URL')|default('https://github.com/cfpb/ckanext-cfpb-extrafields', true)}}"
