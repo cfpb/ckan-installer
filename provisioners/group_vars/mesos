@@ -51,7 +51,7 @@ ckan_reindex_solr: "{{lookup('env', 'CKAN_REINDEX_SOLR')|default(True, true)}}"
 ckan_custom_plugins:
   - name: ldap
     egg_name: ckanext_ldap
-    url: "https://github.com/NaturalHistoryMuseum/ckanext-ldap"
+    url: "https://github.com/tanderegg/ckanext-ldap@digest_md5"
   - name: ckanext_cfpb_extrafields ckanext_cfpb_export ckanext_cfpb_import
     egg_name: ckanext_cfpb_extrafields
     url: "{{lookup('env', 'CKAN_CFPB_PLUGIN_URL')|default('https://github.com/cfpb/ckanext-cfpb-extrafields', true)}}"
