@@ -16,7 +16,7 @@ apache_modules:
   - name: wsgi_module
     path: "{{ckan_venv}}/lib/python2.7/site-packages/mod_wsgi/server/mod_wsgi-py27.so"
 
-ckan_create_user_via_web: True 
+ckan_create_user_via_web: False 
 ckan_datastore_db_name: "{{lookup('env', 'CKAN_DATASTORE_DB_NAME')}}"
 ckan_datastore_db_password: "{{lookup('env', 'CKAN_DATASTORE_DB_PASSWORD')}}"
 ckan_datastore_db_user: "{{lookup('env', 'CKAN_DATASTORE_DB_USER')}}"
