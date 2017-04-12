@@ -50,4 +50,6 @@ ckan_force_reinstall_plugins: True
 # User Registration Settings (registration only allowed on local machines without LDAP)
 ckan_create_user_via_web: False
 
+# Whether to enable the pylons debugger middleware. Should NOT be true in production
+ckan_debug: False
 file_permissions: "u+rw,g+r,o+r"

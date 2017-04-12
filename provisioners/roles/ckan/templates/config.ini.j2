@@ -14,7 +14,7 @@
 [DEFAULT]
 
 # WARNING: *THIS SETTING MUST BE SET TO FALSE ON A PRODUCTION ENVIRONMENT*
-debug = false
+debug = {{ckan_debug | bool | lower }}
 
 [server:main]
 use = egg:Paste#http
