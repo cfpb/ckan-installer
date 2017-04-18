@@ -79,7 +79,7 @@
 
 # Need to use python -m pip because when installing on mesos, you can't run pip directly due to the #! line being too long
 - name: pip install CKAN
-  shell: "source {{ckan_venv}}/bin/activate && python -m pip install -e git+https://github.com/ckan/ckan.git@{{ckan_version_tag}}#egg=ckan"
+  shell: "source {{ckan_venv}}/bin/activate && python -m pip install -e {{ckan_git_url}}@{{ckan_version_tag}}#egg=ckan"
 
 - name: pip install CKAN requirements
   shell: "source {{ckan_venv}}/bin/activate && PATH=\"/usr/pgsql-9.4/bin:/usr/pgsql-9.5/bin:$PATH\" python -m pip install -r {{ckan_venv}}/src/ckan/requirements.txt"

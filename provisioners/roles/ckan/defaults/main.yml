@@ -1,6 +1,7 @@
 ---
 # defaults file for ckan
 ckan_version_tag: ckan-2.3
+ckan_git_url: git+https://github.com/ckan/ckan.git
 solr_home: /opt/solr
 apache_user: vagrant
 apache_group: vagrant
