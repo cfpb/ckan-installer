@@ -124,11 +124,13 @@
     recurse=yes
 
 - name: check if CKAN uploads directory exists
+  ignore_errors: true
   stat:
     path: "{{ckan_file_storage_dir}}"
   register: ckan_upload_dir_stat
 
 - name: create CKAN uploads directory
+  ignore_errors: true
   file:
     path="{{ckan_file_storage_dir}}"
     state=directory
