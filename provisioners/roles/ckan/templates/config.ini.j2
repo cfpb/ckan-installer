@@ -59,7 +59,22 @@ ckan.site_url = {{ckan_site_url}}
 
 ## GitHub Enterprise settings
 ckan.ckanext_cfpb_extrafields.github_api_url = {{ckan_github_api_url}}
+
+## LDAP Settings
+{% if ckan_ldap_uri is defined %}
+ckanext.ldap.uri = {{ckan_ldap_uri}}
+ckanext.ldap.base_dn = {{ckan_ldap_base_dn}}
+ckanext.ldap.auth.dn = {{ckan_ldap_auth_dn}}
+ckanext.ldap.auth.password = {{ckan_ldap_auth_password}}
+ckanext.ldap.auth.method = SASL
+ckanext.ldap.search.filter = sAMAccountName={login}
+ckanext.ldap.username = sAMAccountName
+ckanext.ldap.fullname = displayName
+ckanext.ldap.email = mail
+{% endif %}
     
+ckanext.cfpb_sso.http_header = X-Remote-User
+
 ## Authorization Settings
 
 ckan.auth.anon_create_dataset = false

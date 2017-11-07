@@ -1,6 +1,8 @@
 ---
 # Note: Try to minimize the number of group-specific variables
 
+# Whether you need to use sudo for creating ckan directories
+use_sudo: yes
 ckan_github_api_url: https://api.github.com/
 ckan_version_tag: ckan-2.3
 ckan_user: vagrant
@@ -18,5 +20,6 @@ ckan_force_reinstall_plugins: False
 ace_force_reinstall: False
 ckan_custom_plugins:
   - name: ckanext_cfpb_extrafields
+  #- name: ckanext_cfpb_extrafields ckanext_cfpb_export ckanext_cfpb_import
     egg_name: ckanext_cfpb_extrafields
     url: https://github.com/cfpb/ckanext-cfpb-extrafields

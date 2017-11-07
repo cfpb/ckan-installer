@@ -1,0 +1,57 @@
+---
+# Note: Try to minimize the number of group-specific variables
+
+use_sudo: no
+#TODO add apache module to local/all group_vars
+ace_force_reinstall: False
+
+apache_as_service: False
+apache_config_dir: "{{lookup('env', 'MESOS_SANDBOX')}}/apache_ckan.conf"
+apache_server_root: "{{lookup('env', 'MESOS_SANDBOX')}}/httpd"
+apache_port: "{{lookup('env', 'PORT0')}}"
+apache_run_wsgi_daemon: False
+apache_modules:
+  - name: log_config_module
+    path: "/usr/lib64/httpd/modules/mod_log_config.so"
+  - name: wsgi_module
+    path: "{{ckan_venv}}/lib/python2.7/site-packages/mod_wsgi/server/mod_wsgi-py27.so"
+
+ckan_create_user_via_web: False 
+ckan_datastore_db_name: "{{lookup('env', 'CKAN_DATASTORE_DB_NAME')}}"
+ckan_datastore_db_password: "{{lookup('env', 'CKAN_DATASTORE_DB_PASSWORD')}}"
+ckan_datastore_db_user: "{{lookup('env', 'CKAN_DATASTORE_DB_USER')}}"
+ckan_db_name: "{{lookup('env', 'CKAN_DB_NAME')}}"
+ckan_db_password: "{{lookup('env', 'CKAN_DB_PASSWORD')}}"
+ckan_db_user: "{{lookup('env', 'CKAN_DB_USER')}}"
+ckan_file_storage_dir: "{{lookup('env', 'CKAN_FILE_STORAGE_DIR')|default('/home/work/ckan/uploads', true)}}"
+ckan_force_reinstall_plugins: False
+ckan_github_api_url: "{{lookup('env', 'CKAN_GITHUB_API')|default('https://api.github.com/', true)}}"
+ckan_group: "{{lookup('env', 'CKAN_GROUP')|default('mesagent', true)}}"
+ckan_install_dir: "{{lookup('env', 'MESOS_SANDBOX')}}/ckan"
+ckan_log_dir: "{{ckan_install_dir}}/logs"
+ckan_config_dir: "{{ckan_install_dir}}/config/default"
+ckan_site_url: "{{lookup('env', 'CKAN_SITE_URL')}}/ckan"
+ckan_user: "{{lookup('env', 'CKAN_USER')|default('mesagent', true)}}"
+ckan_venv: "{{ckan_install_dir}}/default"
+ckan_version_tag: "{{lookup('env', 'CKAN_VERSION_TAG')|default('ckan-2.3', true)}}"
+
+ckan_ldap_uri: "{{lookup('env', 'CKAN_LDAP_URI')}}"
+ckan_ldap_base_dn: "{{lookup('env', 'CKAN_LDAP_BASE_DN')}}"
+ckan_ldap_auth_dn: "{{lookup('env', 'CKAN_LDAP_AUTH_DN')}}"
+ckan_ldap_auth_password: "{{lookup('env', 'CKAN_LDAP_AUTH_PASSWORD')}}"
+
+file_permissions: "u+rw,g-w,o-w"
+
+postgres_login_host: "{{lookup('env', 'CKAN_POSTGRES_HOST')}}"
+postgres_port: "{{lookup('env', 'CKAN_POSTGRES_PORT')}}"
+
+solr_url: "{{lookup('env', 'CKAN_SOLR_URL')}}"
+ckan_reindex_solr: "{{lookup('env', 'CKAN_REINDEX_SOLR')|default(True, true)}}"
+
+ckan_custom_plugins:
+  - name: ldap
+    egg_name: ckanext_ldap
+    url: "https://github.com/tanderegg/ckanext-ldap@digest_md5"
+  - name: ckanext_cfpb_extrafields ckanext_cfpb_export ckanext_cfpb_import ckanext_cfpb_sso
+    egg_name: ckanext_cfpb_extrafields
+    url: "{{lookup('env', 'CKAN_CFPB_PLUGIN_URL')|default('https://github.com/cfpb/ckanext-cfpb-extrafields', true)}}"

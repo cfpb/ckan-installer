@@ -1,7 +1,15 @@
-LoadModule wsgi_module /usr/local/lib/python2.7/site-packages/mod_wsgi/server/mod_wsgi-py27.so
-WSGISocketPrefix /var/run/wsgi
+{% for module in apache_modules %}
+LoadModule {{module.name}} {{module.path}}
+{% endfor %}
 
-<VirtualHost 0.0.0.0:80>
+ServerRoot {{apache_server_root}}
+WSGISocketPrefix sockets/wsgi
+
+ErrorLog apache.error.log
+CustomLog apache.custom.log combined
+
+Listen {{apache_port}}
+<VirtualHost 0.0.0.0:{{apache_port}}>
     ServerName {{ckan_server_name}}
     ServerAlias {{ckan_server_alias}}
     WSGIScriptAlias / {{ckan_config_dir}}/apache.wsgi
@@ -10,10 +18,12 @@ WSGISocketPrefix /var/run/wsgi
     WSGIPassAuthorization On
 
     # Deploy as a daemon (avoids conflicts between CKAN instances).
+    {% if apache_run_wsgi_daemon %}
     WSGIDaemonProcess ckan_default user={{ckan_user}} group={{ckan_group}} display-name=ckan_default processes=2 threads=15 
 
     WSGIProcessGroup ckan_default
-
-    ErrorLog /var/log/httpd/ckan_default.error.log
-    CustomLog /var/log/httpd/ckan_default.custom.log combined
+    {% endif %}
+    #XXX: This put logs relative to SERVER_ROOT, which is /etc/httpd for non-mesos
+    ErrorLog ckan_default.error.log
+    CustomLog ckan_default.custom.log combined
 </VirtualHost>

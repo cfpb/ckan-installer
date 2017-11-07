@@ -1,0 +1,45 @@
+{
+  "id": "/dc-test",
+  "cmd": "env; cd ckan-installer-master/provisioners && ansible-playbook -vvvv provision-mesos.yml ; source \"$MESOS_SANDBOX/ckan/default/bin/activate\"; uwsgi --http :$PORT0 --threads 8 --buffer-size 65535 --wsgi-file \"$MESOS_SANDBOX/ckan/config/default/apache.wsgi\"",
+  "cpus": 1,
+  "mem": 512,
+  "disk": 0,
+  "instances": 1,
+  "env": {
+    "ANSIBLE_CONFIG": "ansible-mesos.cfg",
+    "CKAN_DATASTORE_DB_USER": "datastore_default",
+    "CKAN_SOLR_URL": "http://10.0.2.2:8983/solr",
+    "CKAN_SITE_URL": "http://$HOST:$PORT0",
+    "CKAN_DATASTORE_DB_NAME": "ckan_datastore",
+    "CKAN_DB_USER": "ckan_default",
+    "CKAN_POSTGRES_HOST": "10.0.2.2",
+    "CKAN_DATASTORE_DB_PASSWORD": "your-super-secure-ckan-password!23",
+    "CKAN_DB_PASSWORD": "your-super-secure-ckan-password!23",
+    "CKAN_POSTGRES_PORT": "5432",
+    "CKAN_DB_NAME": "ckan",
+    "CKAN_REINDEX_SOLR": "True",
+    "CKAN_VERSION_TAG": "ckan-2.3"
+  },
+  "healthChecks": [
+    {
+      "path": "/",
+      "protocol": "HTTP",
+      "portIndex": 0,
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 30,
+      "timeoutSeconds": 15,
+      "maxConsecutiveFailures": 40,
+      "ignoreHttp1xx": false
+    }
+  ],
+  "portDefinitions": [
+    {
+      "port": 10000,
+      "protocol": "tcp",
+      "labels": {}
+    }
+  ],
+  "uris": [
+    "https://github.com/cfpb/ckan-installer/archive/master.tar.gz"
+  ]
+}

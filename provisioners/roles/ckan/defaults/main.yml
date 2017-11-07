@@ -9,7 +9,7 @@ ckan_server_alias: localhost
 ckan_file_storage_dir: "{{ckan_venv}}/uploads"
 ckan_log_dir: /var/log/ckan
 ckan_site_id: ckan
-ckan_site_url: ""
+ckan_site_url: "http://localhost:8080"
 
 # postgres settings
 postgres_login_host: localhost
@@ -18,8 +18,19 @@ ckan_db_name: ckan
 ckan_db_user: svc_ckan
 ckan_datastore_db_name: ckan_datastore
 
+# apache settings
+apache_as_service: True
+apache_config_dir: "/etc/httpd/conf.d/ckan.conf"
+apache_modules:
+  - name: log_config_module
+    path: "/usr/lib64/httpd/modules/mod_log_config.so"
+apache_port: 8080
+apache_run_wsgi_daemon: True
+apache_server_root: "/etc/httpd"
+
 # solr settings
 solr_url: http://127.0.0.1:8983/solr
+ckan_reindex_solr: True
 
 # Email Settings
 ckan_email_to: ""
@@ -38,3 +49,5 @@ ckan_force_reinstall_plugins: True
 
 # User Registration Settings (registration only allowed on local machines without LDAP)
 ckan_create_user_via_web: False
+
+file_permissions: "u+rw,g+r,o+r"

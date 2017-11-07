@@ -1,0 +1,7 @@
+localhost ansible_connection=local
+
+[mesos]
+localhost
+
+[app]
+localhost
