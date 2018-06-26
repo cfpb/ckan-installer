@@ -120,7 +120,9 @@
 
 - name: pip install the requirements of custom plugins
   pip:
-    requirements: {{ ckan_venv }}/src/{{ item.item.egg_name|regex_replace('_', '-') }}/requirements.txt
+    requirements: "{{ ckan_venv }}/src/{{ item.item.egg_name|regex_replace('_', '-') }}/requirements.txt"
+    virtualenv: "{{ ckan_venv }}"
+    virtualenv_command: /usr/local/bin/virtualenv
   with_items: "{{ plugins_requirements.results }}"
   when: item.stat.exists
 
