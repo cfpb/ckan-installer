@@ -1,7 +1,5 @@
 ---
 # Provisions the CKAN VM from scratch for Mesos
-
-
 - hosts: mesos
   gather_facts: False
   roles:

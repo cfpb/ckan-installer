@@ -1,11 +1,11 @@
 ---
 # handlers file for ckan
 - name: restart postgres
-  service: name=postgresql-9.4 state=restarted sleep=1 #TODO update to postgresql-9.5?
+  service: name=postgresql-{{ postgres_version }} state=restarted sleep=1
   when: use_sudo and groups.has_key('local') and inventory_hostname in groups.local
   become: yes
 
 - name: restart ckan apache
   service: name=httpd state=restarted sleep=1
-  when: apache_as_service
+  when: use_sudo and apache_as_service
   become: yes

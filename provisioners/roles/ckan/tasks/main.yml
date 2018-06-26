@@ -59,15 +59,15 @@
     recurse: yes
   become: "{{ use_sudo }}"
 
-#Make the ckan venv
+# Make the ckan venv
 - name: make the virtual environment
   shell: "/usr/local/bin/virtualenv $(basename {{ ckan_venv }})"
   args:
     creates: "{{ ckan_venv }}"
     chdir: "{{ ckan_venv }}/.."
 
-#This version of python throws SNIMissingWarning unless an SNI extension to TLS is available
-- name: pip install ssl extensions
+# This version of python throws SNIMissingWarning unless an SNI extension to TLS is available
+- name: pip install dependencies
   pip:
     name: "{{ item }}"
     virtualenv: "{{ ckan_venv }}"
@@ -222,6 +222,7 @@
   #notify: restart ckan apache
 
 - name: ensure correct ownership for all ckan directories
+  become: "{{ use_sudo }}"
   file:
       path: "{{ item }}"
       state: directory
@@ -233,14 +234,14 @@
     - "{{ ckan_install_dir }}"
     - "{{ ckan_config_dir }}"
     - "{{ ckan_log_dir }}"
-  become: "{{ use_sudo }}"
-  #notify: restart ckan apache
+  notify: restart ckan apache
 
 # I think this was a feature started on that was never completed. For now, only enable it in dev environment
 - name: create crontab for sending activity stream emails
   become: yes
-  cron: name="ckan_send_emails"
-        minute={{ckan_email_flush_interval}}
-        job="echo $(date) >> {{ckan_log_dir}}/email_flush.log && echo '{}' | {{ckan_venv}}/bin/python {{ckan_venv}}/bin/paster post -c {{ckan_config_dir}}/config.ini /api/action/send_email_notifications >> {{ckan_log_dir}}/email_flush.log && echo '' >> {{ckan_log_dir}}/email_flush.log"
-        user=root
+  cron:
+    name: "ckan_send_emails"
+    minute: "{{ ckan_email_flush_interval }}"
+    job: "echo $(date) >> {{ ckan_log_dir }}/email_flush.log && echo '{}' | {{ ckan_venv }}/bin/python {{ ckan_venv }}/bin/paster post -c {{ ckan_config_dir }}/config.ini /api/action/send_email_notifications >> {{ ckan_log_dir }}/email_flush.log && echo '' >> {{ ckan_log_dir }}/email_flush.log"
+    user: root
   when: use_sudo
