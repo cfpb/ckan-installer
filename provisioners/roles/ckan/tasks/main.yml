@@ -71,7 +71,7 @@
   pip:
     name: "{{ item }}"
     virtualenv: "{{ ckan_venv }}"
-    virutalenv_command: /usr/local/bin/virtualenv
+    virtualenv_command: /usr/local/bin/virtualenv
   with_items:
     - "requests[security]"
     - python-ldap
