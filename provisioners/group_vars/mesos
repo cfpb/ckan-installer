@@ -43,6 +43,12 @@ ckan_ldap_base_dn: "{{ lookup('env', 'CKAN_LDAP_BASE_DN') }}"
 ckan_ldap_auth_dn: "{{ lookup('env', 'CKAN_LDAP_AUTH_DN') }}"
 ckan_ldap_auth_password: "{{ lookup('env', 'CKAN_LDAP_AUTH_PASSWORD') }}"
 
+ckan_ldap_query_base_dns: "{{ lookup('env', 'CKAN_LDAP_QUERY_BASE_DNS') }}"
+
+ckan_workflow_url: "{{ lookup('env', 'CKAN_WORKFLOW_URL') }}"
+ckan_workflow_user: "{{ lookup('env', 'CKAN_WORKFLOW_USER') }}"
+ckan_workflow_pass: "{{ lookup('env', 'CKAN_WORKFLOW_PASS') }}"
+
 file_permissions: "u+rw,g-w,o-w"
 
 postgres_login_host: "{{ lookup('env', 'CKAN_POSTGRES_HOST') }}"

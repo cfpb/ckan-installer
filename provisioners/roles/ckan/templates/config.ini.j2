@@ -72,11 +72,16 @@ ckanext.ldap.username = sAMAccountName
 ckanext.ldap.fullname = displayName
 ckanext.ldap.email = mail
 {% endif %}
-    
+
 ckanext.cfpb_sso.http_header = X-Remote-User
 
 #DN's to search for groups in
-ckanext.cfpb_ldap_query.base_dns = OU=CFPB Security Groups,DC=cfpb,DC=local|OU=CFPB Data Access Groups,OU=CFPB Security Groups,DC=cfpb,CD=local
+ckanext.cfpb_ldap_query.base_dns = {{ ckan_ldap_query_base_dns }}
+
+# Workflow Settings
+ckanext.access.workflow_url = {{ ckan_workflow_url }}
+ckanext.access.workflow_user = {{ ckan_workflow_user }}
+ckanext.access.workflow_pass = {{ ckan_workflow_pass }}
 
 ## Authorization Settings
 
