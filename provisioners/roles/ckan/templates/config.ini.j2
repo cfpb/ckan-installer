@@ -55,24 +55,24 @@ ckan.datastore.default_fts_index_method = gist
 
 ## Site Settings
 
-ckan.site_url = {{ckan_site_url}}
+ckan.site_url = {{ ckan_site_url }}
 
 ## GitHub Enterprise settings
-ckan.ckanext_cfpb_extrafields.github_api_url = {{ckan_github_api_url}}
+ckan.ckanext_cfpb_extrafields.github_api_url = {{ ckan_github_api_url }}
 
 ## LDAP Settings
 {% if ckan_ldap_uri is defined %}
-ckanext.ldap.uri = {{ckan_ldap_uri}}
-ckanext.ldap.base_dn = {{ckan_ldap_base_dn}}
-ckanext.ldap.auth.dn = {{ckan_ldap_auth_dn}}
-ckanext.ldap.auth.password = {{ckan_ldap_auth_password}}
+ckanext.ldap.uri = {{ ckan_ldap_uri }}
+ckanext.ldap.base_dn = {{ ckan_ldap_base_dn }}
+ckanext.ldap.auth.dn = {{ ckan_ldap_auth_dn }}
+ckanext.ldap.auth.password = {{ ckan_ldap_auth_password }}
 ckanext.ldap.auth.method = SASL
 ckanext.ldap.search.filter = sAMAccountName={login}
 ckanext.ldap.username = sAMAccountName
 ckanext.ldap.fullname = displayName
 ckanext.ldap.email = mail
 {% endif %}
-    
+
 ckanext.cfpb_sso.http_header = X-Remote-User
 
 #DN's to search for groups in
@@ -94,8 +94,8 @@ ckan.auth.roles_that_cascade_to_sub_groups = admin
 
 ## Search Settings
 
-ckan.site_id = {{ckan_site_id}}
-solr_url = {{solr_url}}
+ckan.site_id = {{ ckan_site_id }}
+solr_url = {{ solr_url }}
 
 #ckan.simple_search = 1
 
@@ -205,7 +205,7 @@ keys = console
 keys = generic
 
 [logger_root]
-level = WARNING
+level = INFO
 handlers = console
 
 [logger_ckan]
