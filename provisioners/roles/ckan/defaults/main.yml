@@ -1,9 +1,7 @@
 ---
 # defaults file for ckan
 ckan_version_tag: ckan-2.3
-solr_home: /opt/solr
-apache_user: vagrant
-apache_group: vagrant
+ckan_git_url: git+https://github.com/ckan/ckan.git
 ckan_server_name: localhost
 ckan_server_alias: localhost
 ckan_file_storage_dir: "{{ckan_venv}}/uploads"
@@ -11,9 +9,37 @@ ckan_log_dir: /var/log/ckan
 ckan_site_id: ckan
 ckan_site_url: "http://localhost:8080"
 
+# Email Settings
+ckan_email_to: ""
+ckan_error_email_from: ckan-noreply-error@localhost
+ckan_email_from: ckan-noreply@localhost
+ckan_smtp_server: localhost
+ckan_smtp_starttls: False
+ckan_smtp_user: ""
+ckan_smtp_password: ""
+
+# default: every 30 minutes.
+ckan_email_flush_interval: "0,30"
+
+# Plugin Settings
+ckan_plugins: stats text_preview recline_preview datastore
+ckan_force_reinstall_plugins: True
+
+# User Registration Settings (registration only allowed on local machines without LDAP)
+ckan_create_user_via_web: False
+
+# Whether to enable the pylons debugger middleware. Should NOT be true in production
+ckan_debug: False
+file_permissions: "u+rw,g+r,o+r"
+
+solr_home: /opt/solr
+apache_user: vagrant
+apache_group: vagrant
+
 # postgres settings
 postgres_login_host: localhost
 postgres_port: 5432
+postgres_version: 9.4
 ckan_db_name: ckan
 ckan_db_user: svc_ckan
 ckan_datastore_db_name: ckan_datastore
@@ -31,23 +57,3 @@ apache_server_root: "/etc/httpd"
 # solr settings
 solr_url: http://127.0.0.1:8983/solr
 ckan_reindex_solr: True
-
-# Email Settings
-ckan_email_to: ""
-ckan_error_email_from: ckan-noreply-error@localhost
-ckan_email_from: ckan-noreply@localhost
-ckan_smtp_server: localhost
-ckan_smtp_starttls: False
-ckan_smtp_user: ""
-ckan_smtp_password: ""
-# default: every 30 minutes.
-ckan_email_flush_interval: "0,30"
-
-# Plugin Settings
-ckan_plugins: stats text_preview recline_preview datastore
-ckan_force_reinstall_plugins: True
-
-# User Registration Settings (registration only allowed on local machines without LDAP)
-ckan_create_user_via_web: False
-
-file_permissions: "u+rw,g+r,o+r"
