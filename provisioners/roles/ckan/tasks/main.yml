@@ -73,6 +73,7 @@
     virtualenv: "{{ ckan_venv }}"
     virtualenv_command: /usr/local/bin/virtualenv
   with_items:
+    - "pip==19.1"
     - "requests[security]"
     - python-ldap
     - mod_wsgi
