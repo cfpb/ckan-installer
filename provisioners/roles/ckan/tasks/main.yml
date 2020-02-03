@@ -74,6 +74,7 @@
     virtualenv_command: /usr/local/bin/virtualenv
   with_items:
     - "pip==19.1"
+    - "setuptools<45"
     - "requests[security]"
     - python-ldap
     - mod_wsgi
