@@ -64,6 +64,8 @@
     creates: "{{ckan_venv}}"
     chdir: "{{ckan_venv}}/.."
 
+- name: pip install pip==19.1
+  shell: "source {{ckan_venv}}/bin/activate && python -m pip install pip==19.1
 #This version of python throws SNIMissingWarning unless an SNI extension to TLS is available
 - name: pip install ssl extensions
   shell: "source {{ckan_venv}}/bin/activate && python -m pip install requests[security]"
