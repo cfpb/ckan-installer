@@ -1,4 +1,8 @@
 ---
+# Python
+
+ckan_virtualenv_bin: /usr/local/bin/virtualenv
+
 # defaults file for ckan
 ckan_version_tag: ckan-2.3
 ckan_git_url: git+https://github.com/ckan/ckan.git

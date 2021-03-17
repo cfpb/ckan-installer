@@ -61,7 +61,7 @@
 
 # Make the ckan venv
 - name: make the virtual environment
-  shell: "/usr/local/bin/virtualenv $(basename {{ ckan_venv }})"
+  shell: "{{ ckan_virtualenv_bin }} $(basename {{ ckan_venv }})"
   args:
     creates: "{{ ckan_venv }}"
     chdir: "{{ ckan_venv }}/.."
@@ -71,7 +71,6 @@
   pip:
     name: "{{ item }}"
     virtualenv: "{{ ckan_venv }}"
-    virtualenv_command: /usr/local/bin/virtualenv
   with_items:
     - "pip==19.1"
     - "setuptools<45"
@@ -85,7 +84,6 @@
   pip:
     requirements: "{{ ckan_venv }}/src/ckan/requirements.txt"
     virtualenv: "{{ ckan_venv }}"
-    virtualenv_command: /usr/local/bin/virtualenv
   environment:
     PATH: "/usr/pgsql/bin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin"
 
@@ -107,7 +105,6 @@
   pip:
     name: "git+{{item.0.url}}#egg={{item.0.egg_name}}"
     virtualenv: "{{ ckan_venv }}"
-    virtualenv_command: /usr/local/bin/virtualenv
   with_together:
     - "{{ ckan_custom_plugins }}"
     - "{{ check_plugin_path.results }}"
@@ -124,7 +121,6 @@
   pip:
     requirements: "{{ ckan_venv }}/src/{{ item.item.egg_name|regex_replace('_', '-') }}/requirements.txt"
     virtualenv: "{{ ckan_venv }}"
-    virtualenv_command: /usr/local/bin/virtualenv
   with_items: "{{ plugins_requirements.results }}"
   when: item.stat.exists
 
