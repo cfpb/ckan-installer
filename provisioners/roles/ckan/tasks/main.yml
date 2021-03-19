@@ -22,6 +22,7 @@
     group: "{{ ckan_group }}"
     mode: 0755
     recurse: yes
+    follow: no
 
 - name: create apache server root
   become: "{{ use_sudo }}"
@@ -32,6 +33,7 @@
     group: "{{ ckan_group }}"
     mode: 0755
     recurse: yes
+    follow: no
 
 - name: check if apache run dir exists
   stat:
@@ -46,6 +48,7 @@
     group: "{{ ckan_group }}"
     mode: 0755
     recurse: yes
+    follow: no
   when: not apache_run_dir_stat.stat.exists
   become: "{{ use_sudo }}"
 
@@ -57,6 +60,7 @@
     group: "{{ckan_group}}"
     mode: 0755
     recurse: yes
+    follow: no
   become: "{{ use_sudo }}"
 
 # Make the ckan venv
@@ -132,6 +136,7 @@
     owner: "{{ ckan_user }}"
     group: "{{ ckan_group }}"
     recurse: yes
+    follow: no
 
 - name: check if CKAN uploads directory exists
   stat:
@@ -146,6 +151,7 @@
     owner: "{{ ckan_user }}"
     group: "{{ ckan_group }}"
     recurse: yes
+    follow: no
   when: not ckan_upload_dir_stat.stat.exists
   ignore_errors: true
 
@@ -159,6 +165,7 @@
     owner: "{{ckan_user}}"
     group: "{{ckan_group}}"
     recurse: yes
+    follow: no
   become: "{{ use_sudo }}"
 
 - name: create CKAN config file
@@ -230,6 +237,7 @@
       owner: "{{ ckan_user }}"
       group: "{{ ckan_group }}"
       recurse: true
+      follow: no
       #mode="{{file_permissions}}"
   with_items:
     - "{{ ckan_install_dir }}"
