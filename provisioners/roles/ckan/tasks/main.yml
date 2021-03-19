@@ -89,7 +89,13 @@
     - python-ldap
     - mod_wsgi
     - uwsgi
-    - "{{ ckan_git_url }}@{{ ckan_version_tag }}#egg=ckan"
+    #- "{{ ckan_git_url }}@{{ ckan_version_tag }}#egg=ckan"
+  environment: "{{ scl_python27_enable }}"
+
+- name: pip install main CKAN repo
+  pip:
+    name: "{{ ckan_git_url }}@{{ ckan_version_tag }}#egg=ckan"
+    virtualenv: "{{ ckan_venv }}"
   environment: "{{ scl_python27_enable }}"
 
 - name: pip install CKAN requirements
@@ -109,7 +115,7 @@
 - name: notification when skipping git clone
   debug:
     msg: "plugin folder exists so cloning will be skipped!!"
-  with_items: check_plugin_path.results
+  with_items: "{{ check_plugin_path.results }}"
   when: check_plugin_path.results is defined and item.stat.exists
 
 # TODO: Write a custom module that installs the custom plugins
