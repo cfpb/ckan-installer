@@ -2,6 +2,17 @@
 # Python
 
 ckan_virtualenv_bin: /usr/local/bin/virtualenv
+# This environment array simulates "scl enable python27"
+# and is generally equivalent to doing "source /opt/rh/python27/enable"
+scl_python27_enable:
+  PATH: /opt/rh/python27/root/usr/bin:{{ lookup('env','PATH') }}
+  LD_LIBRARY_PATH: /opt/rh/python27/root/usr/lib64:{{ lookup('env','LD_LIBRARY_PATH') }}
+  MANPATH: /opt/rh/python27/root/usr/share/man
+  # For systemtap
+  XDG_DATA_DIRS: /opt/rh/python27/root/usr/share:/usr/local/share:/usr/share
+  # For pkg-config
+  PKG_CONFIG_PATH: /opt/rh/python27/root/usr/lib64/pkgconfig
+
 
 # defaults file for ckan
 ckan_version_tag: ckan-2.3

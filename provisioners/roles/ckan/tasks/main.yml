@@ -84,13 +84,14 @@
     - mod_wsgi
     - uwsgi
     - "{{ ckan_git_url }}@{{ ckan_version_tag }}#egg=ckan"
+  environment: "{{ scl_python27_enable }}"
 
 - name: pip install CKAN requirements
   pip:
     requirements: "{{ ckan_venv }}/src/ckan/requirements.txt"
     virtualenv: "{{ ckan_venv }}"
-  environment:
-    PATH: "/usr/pgsql/bin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin"
+  environment: "{{ scl_python27_enable }}"
+  #  PATH: "/usr/pgsql/bin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin"
 
 - name: check whether plugin has already been cloned
   stat:
@@ -114,6 +115,7 @@
     - "{{ ckan_custom_plugins }}"
     - "{{ check_plugin_path.results }}"
   when: ckan_custom_plugins is defined and check_plugin_path.results is defined and (item.1.stat.exists == false or ckan_force_reinstall_plugins)
+  environment: "{{ scl_python27_enable }}"
 
 - name: check if custom plugin has requirements.txt file
   stat:
@@ -128,6 +130,7 @@
     virtualenv: "{{ ckan_venv }}"
   with_items: "{{ plugins_requirements.results }}"
   when: item.stat.exists
+  environment: "{{ scl_python27_enable }}"
 
 - name: create CKAN config directory
   file:
