@@ -96,6 +96,7 @@
   pip:
     name: "{{ ckan_git_url }}@{{ ckan_version_tag }}#egg=ckan"
     virtualenv: "{{ ckan_venv }}"
+    editable: yes
   environment: "{{ scl_python27_enable }}"
 
 - name: pip install CKAN requirements
