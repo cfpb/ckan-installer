@@ -71,6 +71,12 @@
     creates: "{{ ckan_venv }}"
     chdir: "{{ ckan_venv }}/.."
 
+- name: Upgrade pip to latest to support python2
+  pip:
+    name:  "pip==19.1"
+    virtualenv: "{{ ckan_venv }}"
+  environment: "{{ scl_python27_enable }}"
+    
 # This version of python throws SNIMissingWarning unless an SNI extension to TLS is available
 - name: pip install dependencies
   pip:
