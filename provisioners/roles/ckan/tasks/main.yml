@@ -200,6 +200,7 @@
   when: use_sudo and groups.has_key('local') and inventory_hostname in groups.local
   # when: create_datastore_db|changed or create_datastore_db_user|changed or create_ckan_db|changed or create_ckan_db_user|changed
   # notify: restart postgres
+  environment: "{{ scl_python27_enable }}"
 
 - name: create CKAN tables in database
   shell: >
@@ -208,6 +209,7 @@
   args:
     chdir: "{{ckan_venv}}/src/ckan"
   #notify: restart postgres
+  environment: "{{ scl_python27_enable }}"
 
 - name: upgrade CKAN tables in database
   shell: >
@@ -216,6 +218,7 @@
   args:
     chdir: "{{ ckan_venv }}/src/ckan"
   #notify: restart postgres
+  environment: "{{ scl_python27_enable }}"
 
 - name: re-index solr instance
   shell: >
@@ -224,6 +227,7 @@
   args:
     chdir: "{{ ckan_venv }}/src/ckan"
   when: "{{ ckan_reindex_solr }}"
+  environment: "{{ scl_python27_enable }}"
 
 - name: create symlink to who.ini
   file:
