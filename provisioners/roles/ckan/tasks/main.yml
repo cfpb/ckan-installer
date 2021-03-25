@@ -66,7 +66,7 @@
 # Make the ckan venv
 - name: make the virtual environment
   #shell: "{{ ckan_virtualenv_bin }} $(basename {{ ckan_venv }})"
-  shell: "scl enable python27 -- virtualenv $(basename {{ ckan_venv }})"
+  shell: "scl enable python27 -- virtualenv -p /usr/bin/python $(basename {{ ckan_venv }})"
   args:
     creates: "{{ ckan_venv }}"
     chdir: "{{ ckan_venv }}/.."
