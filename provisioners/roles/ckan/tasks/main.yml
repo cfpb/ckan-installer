@@ -141,6 +141,7 @@
   pip:
     name: "git+{{item.0.url}}#egg={{item.0.egg_name}}"
     virtualenv: "{{ ckan_venv }}"
+    editable: yes
   with_together:
     - "{{ ckan_custom_plugins }}"
     - "{{ check_plugin_path.results }}"
