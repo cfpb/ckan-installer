@@ -77,7 +77,7 @@
     - "setuptools<45"
     - "requests[security]"
     - python-ldap
-    - mod_wsgi
+    - "mod_wsgi==4.7.1"
     - uwsgi
     - "{{ ckan_git_url }}@{{ ckan_version_tag }}#egg=ckan"
 
