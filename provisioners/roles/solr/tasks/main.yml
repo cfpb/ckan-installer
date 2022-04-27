@@ -18,7 +18,7 @@
   user: 
     name="{{solr_user}}"
     comment="Apache Solr"
-    createhome=no
+    createhome=yes
     system=yes
     password="{{solr_user_password}}"
   sudo: yes
@@ -56,10 +56,49 @@
     mode=755
   sudo: yes
 
-- name: create CKAN solr schema
+- name: Remove default example core
+  file: 
+    path="{{solr_home}}/solr/collection1/core.properties"
+    state=absent
+  sudo: yes
+
+- name: Create PROD core directory
+  copy: 
+    src="{{solr_home}}/solr/collection1/"
+    remote_src=true
+    dest="{{solr_home}}/solr/ckan-prod/"
+  sudo: yes
+
+- name: Create PROD core
+  copy:
+    content: "name=ckan-prod"
+    dest: "{{solr_home}}/solr/ckan-prod/core.properties"
+  sudo: yes
+
+- name: create CKAN solr schema prod core
   template:
     src=schema.xml.j2
-    dest="{{solr_home}}/solr/collection1/conf/schema.xml"
+    dest="{{solr_home}}/solr/ckan-prod/conf/schema.xml"
+  notify: restart solr
+  sudo: yes
+
+- name: create staging core directory
+  copy: 
+    src="{{solr_home}}/solr/collection1/"
+    remote_src=true
+    dest="{{solr_home}}/solr/ckan-staging/"
+  sudo: yes
+
+- name: Create Staging core
+  copy:
+    content: "name=ckan-staging"
+    dest: "{{solr_home}}/solr/ckan-staging/core.properties"
+  sudo: yes
+
+- name: create CKAN solr schema staging core
+  template:
+    src=schema.xml.j2
+    dest="{{solr_home}}/solr/ckan-staging/conf/schema.xml"
   notify: restart solr
   sudo: yes
 
