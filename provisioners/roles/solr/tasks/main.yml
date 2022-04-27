@@ -63,6 +63,14 @@
   sudo: yes
 
 - name: Create PROD core directory
+  file: 
+    path="{{solr_home}}/solr/ckan-prod"
+    state=directory
+    owner="{{solr_user}}"
+    group="{{solr_group}}"
+  sudo: yes
+
+- name: Populate PROD core directory
   copy: 
     src="{{solr_home}}/solr/collection1"
     remote_src=true
@@ -82,7 +90,15 @@
   notify: restart solr
   sudo: yes
 
-- name: create staging core directory
+- name: Create Staging core directory
+  file: 
+    path="{{solr_home}}/solr/ckan-staging"
+    state=directory
+    owner="{{solr_user}}"
+    group="{{solr_group}}"
+  sudo: yes
+
+- name: Populate Staging core directory
   copy: 
     src="{{solr_home}}/solr/collection1"
     remote_src=true
