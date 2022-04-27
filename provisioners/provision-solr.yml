@@ -1,0 +1,7 @@
+---
+# Provisions the CKAN Solr
+
+- hosts: solr_server
+  gather_facts: False
+  roles:
+    - solr
