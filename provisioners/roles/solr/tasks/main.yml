@@ -64,9 +64,9 @@
 
 - name: Create PROD core directory
   copy: 
-    src="{{solr_home}}/solr/collection1/"
+    src="{{solr_home}}/solr/collection1"
     remote_src=true
-    dest="{{solr_home}}/solr/ckan-prod/"
+    dest="{{solr_home}}/solr/ckan-prod"
   sudo: yes
 
 - name: Create PROD core
@@ -84,9 +84,9 @@
 
 - name: create staging core directory
   copy: 
-    src="{{solr_home}}/solr/collection1/"
+    src="{{solr_home}}/solr/collection1"
     remote_src=true
-    dest="{{solr_home}}/solr/ckan-staging/"
+    dest="{{solr_home}}/solr/ckan-staging"
   sudo: yes
 
 - name: Create Staging core
