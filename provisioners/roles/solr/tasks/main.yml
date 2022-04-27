@@ -72,7 +72,7 @@
 
 - name: Populate PROD core directory
   copy: 
-    src="{{solr_home}}/solr/collection1"
+    src="{{solr_home}}/solr/collection1/"
     remote_src=true
     dest="{{solr_home}}/solr/ckan-prod"
   sudo: yes
@@ -100,7 +100,7 @@
 
 - name: Populate Staging core directory
   copy: 
-    src="{{solr_home}}/solr/collection1"
+    src="{{solr_home}}/solr/collection1/"
     remote_src=true
     dest="{{solr_home}}/solr/ckan-staging"
   sudo: yes
