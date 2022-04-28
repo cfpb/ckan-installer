@@ -7,3 +7,4 @@ solr_user_password: $6$rounds=100000$IGDBTmZvVy2T1Edh$jNd.4ZnMV2woq.O9yDfneeJNDd
 solr_group: solr
 jetty_user: solr
 jetty_log_path: /var/log/solr
+jetty_port: 8983
